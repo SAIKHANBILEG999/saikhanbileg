@@ -1,13 +1,14 @@
 import { Search, User, Menu, X } from "lucide-react";
 import { NAV_LINKS } from "../types";
 
-const profileAvatar = "/src/assets/images/minecraft_girl_avatar_1782443314115.jpg";
+const profileAvatar = "/src/assets/images/flower_avatar_1782704451351.jpg";
 
 interface NavbarProps {
   isMenuOpen: boolean;
   setIsMenuOpen: (isOpen: boolean) => void;
   onSearchClick: () => void;
   onProfileClick: () => void;
+  onIdolClick: () => void;
 }
 
 export default function Navbar({
@@ -15,6 +16,7 @@ export default function Navbar({
   setIsMenuOpen,
   onSearchClick,
   onProfileClick,
+  onIdolClick,
 }: NavbarProps) {
   return (
     <nav className="relative z-50 flex items-center justify-between px-4 sm:px-6 md:px-12 py-4 md:py-6">
@@ -42,6 +44,15 @@ export default function Navbar({
             {link.label}
           </a>
         ))}
+        {/* "🤖 My Idol" Link */}
+        <button
+          id="nav-link-idol"
+          onClick={onIdolClick}
+          className="text-sm font-medium text-yellow-400 hover:text-yellow-300 transition-colors animate-blur-fade-up flex items-center gap-1.5 cursor-pointer"
+          style={{ animationDelay: `${100 + NAV_LINKS.length * 50}ms` }}
+        >
+          <span>🤖 My Idol</span>
+        </button>
       </div>
 
       {/* Desktop/Tablet Controls & Mobile Toggle (Right) */}

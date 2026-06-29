@@ -4,9 +4,11 @@ import Navbar from "./components/Navbar";
 import MobileMenu from "./components/MobileMenu";
 import HeroContent from "./components/HeroContent";
 import MinecraftRunner from "./components/MinecraftRunner";
+import IdolCoachModal from "./components/IdolCoachModal";
+import MeAiPopup from "./components/MeAiPopup";
 import { Search, User, X, Film, Sparkles, CheckCircle, Gamepad2, ArrowLeft, Play } from "lucide-react";
 
-const profileAvatar = "/src/assets/images/minecraft_girl_avatar_1782443314115.jpg";
+const profileAvatar = "/src/assets/images/flower_avatar_1782704451351.jpg";
 
 export default function App() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -16,6 +18,7 @@ export default function App() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isIdolModalOpen, setIsIdolModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
@@ -87,6 +90,10 @@ export default function App() {
         setIsMenuOpen={setIsMenuOpen}
         onSearchClick={() => setIsSearchOpen(true)}
         onProfileClick={() => setIsProfileOpen(true)}
+        onIdolClick={() => {
+          setIsIdolModalOpen(true);
+          setIsMenuOpen(false);
+        }}
       />
 
       {/* 5. MOBILE DROPDOWN MENU (z-40) */}
@@ -99,6 +106,10 @@ export default function App() {
         onProfileClick={() => {
           setIsMenuOpen(false);
           setIsProfileOpen(true);
+        }}
+        onIdolClick={() => {
+          setIsIdolModalOpen(true);
+          setIsMenuOpen(false);
         }}
       />
 
@@ -386,6 +397,12 @@ export default function App() {
           </button>
         </div>
       )}
+
+      {/* D. Idol Coach Modal */}
+      <IdolCoachModal isOpen={isIdolModalOpen} onClose={() => setIsIdolModalOpen(false)} />
+
+      {/* E. Messenger-style Me-AI Assistant Popup */}
+      <MeAiPopup />
 
     </div>
   );

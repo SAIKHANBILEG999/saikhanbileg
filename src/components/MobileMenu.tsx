@@ -1,18 +1,20 @@
 import { Search, User } from "lucide-react";
 import { NAV_LINKS } from "../types";
 
-const profileAvatar = "/src/assets/images/minecraft_girl_avatar_1782443314115.jpg";
+const profileAvatar = "/src/assets/images/flower_avatar_1782704451351.jpg";
 
 interface MobileMenuProps {
   isOpen: boolean;
   onSearchClick: () => void;
   onProfileClick: () => void;
+  onIdolClick: () => void;
 }
 
 export default function MobileMenu({
   isOpen,
   onSearchClick,
   onProfileClick,
+  onIdolClick,
 }: MobileMenuProps) {
   return (
     <div
@@ -41,6 +43,21 @@ export default function MobileMenu({
             {link.label}
           </a>
         ))}
+        {/* "🤖 My Idol" Link */}
+        <button
+          id="mobile-nav-link-idol"
+          onClick={onIdolClick}
+          className={`text-base font-medium text-yellow-400 hover:text-yellow-300 hover:bg-white/5 py-3 px-4 rounded-xl transition-all duration-300 text-left flex items-center gap-2 transform cursor-pointer ${
+            isOpen
+              ? "translate-x-0 opacity-100"
+              : "translate-x-4 opacity-0"
+          }`}
+          style={{
+            transitionDelay: `${NAV_LINKS.length * 50}ms`,
+          }}
+        >
+          <span>🤖 My Idol</span>
+        </button>
       </div>
 
       {/* Bordered Bottom Section for search/profile on mobile (below sm) */}
