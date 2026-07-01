@@ -5,7 +5,6 @@ interface HeroContentProps {
   activeSlide: MovieSlide;
   onPrev: () => void;
   onNext: () => void;
-  onPlayNow: () => void;
   onLearnMore: () => void;
 }
 
@@ -13,7 +12,6 @@ export default function HeroContent({
   activeSlide,
   onPrev,
   onNext,
-  onPlayNow,
   onLearnMore,
 }: HeroContentProps) {
   const { id, rating, releaseDate, title, description } = activeSlide;
@@ -79,16 +77,6 @@ export default function HeroContent({
             className="flex flex-wrap items-center gap-3 sm:gap-4 animate-blur-fade-up"
             style={{ animationDelay: "600ms" }}
           >
-            {/* Play Now */}
-            <button
-              id="btn-play-now"
-              onClick={onPlayNow}
-              className="flex items-center justify-center gap-2 bg-white text-black hover:bg-gray-200 active:scale-95 transition-all duration-300 rounded-full font-medium px-6 sm:px-8 py-2.5 sm:py-3.5 text-sm sm:text-base cursor-pointer shadow-lg shadow-white/5"
-            >
-              <Play size={18} className="fill-black text-black" />
-              <span>Play Now</span>
-            </button>
-
             {/* Learn More */}
             <button
               id="btn-learn-more"

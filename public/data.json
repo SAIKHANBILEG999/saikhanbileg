@@ -1,0 +1,137 @@
+[
+  {
+    "id": 1,
+    "emojis": "🏴‍☠️🍖👒",
+    "answer": "One Piece",
+    "answers": ["one piece", "onepiece", "ван пийс", "ванпийс", "вон пис"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://dw9to29mmj727.cloudfront.net/promo/2016/5265-SeriesHeaders_OP_2000x800_wm.jpg",
+    "video": "https://www.youtube.com/embed/MCb133932Qs"
+  },
+  {
+    "id": 2,
+    "emojis": "🦊🍜🌀",
+    "answer": "Naruto",
+    "answers": ["naruto", "наруто", "нарото"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg",
+    "video": "https://www.youtube.com/embed/Q73D7Cg_m7E"
+  },
+  {
+    "id": 3,
+    "emojis": "👺⚔️🌊",
+    "answer": "Demon Slayer",
+    "answers": ["demon slayer", "demonslayer", "демон слэйер", "чөтгөр дарагч", "чөтгөрийг дарагч", "kimetsu no yaiba"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://m.media-amazon.com/images/M/MV5BMWU1OGEwNmQtNGM3MS00YTYyLThmYmMtN2FjYzQzNzNmNTE0XkEyXkFqcGc@._V1_.jpg",
+    "video": "https://www.youtube.com/embed/VQGCKyVZIM4"
+  },
+  {
+    "id": 4,
+    "emojis": "🧱👹⚔️",
+    "answer": "Attack on titan",
+    "answers": ["attack on titan", "attackontitan", "атака титанов", "титануудын дайралт", "shingeki no kyojin"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://www.imdb.com/title/tt2560140/mediaviewer/rm2027632897/?ref_=tt_ov_i",
+    "video": "https://www.youtube.com/embed/MGRm4IzK1SQ"
+  },
+  {
+    "id": 5,
+    "emojis": "🍎📓📓",
+    "answer": "Death Note",
+    "answers": ["death note", "deathnote", "үхлийн тэмдэглэл", "дэс ноут"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://www.imdb.com/title/tt0877057/mediaviewer/rm2829388289/?ref_=tt_ov_i",
+    "video": "https://www.youtube.com/embed/N3iF0z7_DVo"
+  },
+  {
+    "id": 6,
+    "emojis": "🏫🥦💥",
+    "answer": "My Hero Academia",
+    "answers": ["my hero academia", "myheroacademia", "миний баатарлаг академи", "boku no hero academia"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://www.imdb.com/title/tt5626028/mediaviewer/rm3793717250/?ref_=tt_ov_i",
+    "video": "https://www.youtube.com/embed/EP7G_vWv_wI"
+  },
+  {
+    "id": 7,
+    "emojis": "🐉🌟🟠",
+    "answer": "Dragon Ball",
+    "answers": ["dragon ball", "dragonball", "драгон балл", "драгонболл"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://www.imdb.com/title/tt0121220/mediaviewer/rm2579038720/?ref_=tt_ov_i",
+    "video": "https://www.youtube.com/embed/Uo-vL_WfShY"
+  },
+  {
+    "id": 8,
+    "emojis": "🤞👹🕶️",
+    "answer": "Jujutsu Kaisen",
+    "answers": ["jujutsu kaisen", "jujutsukaisen", "жүжүцү кайсэн", "шидний тулаан"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://www.imdb.com/title/tt12343534/mediaviewer/rm1791402498/?ref_=tt_ov_i",
+    "video": "https://www.youtube.com/embed/yv5f_NAtLKs"
+  },
+  {
+    "id": 9,
+    "emojis": "🎣🃏🕷️",
+    "answer": "Hunter X Hunter",
+    "answers": ["hunter x hunter", "hunterxhunter", "хантер хантер", "хантер х хантер"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://www.imdb.com/title/tt2098220/mediaviewer/rm3767801089/?ref_=tt_ov_i",
+    "video": ""
+  },
+  {
+    "id": 10,
+    "emojis": "🦾🦁⚗️",
+    "answer": "Fullmetal Alchemist",
+    "answers": ["fullmetal alchemist", "fullmetalalchemist", "ган төмөр алхимич", "фуллметал алхимист"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://www.imdb.com/title/tt1355642/mediaviewer/rm4007074048/?ref_=tt_ov_i",
+    "video": "https://www.imdb.com/video/vi4196311833/?playlistId=tt1355642&ref_=tt_ov_ov_vi"
+  },
+  {
+    "id": 11,
+    "emojis": "⚔️💀🍊",
+    "answer": "Bleach",
+    "answers": ["bleach", "блич", "блийч"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://www.imdb.com/title/tt0434665/mediaviewer/rm3912898816/?ref_=tt_ov_i",
+    "video": "https://www.imdb.com/video/vi2667095577/?playlistId=tt0434665&ref_=tt_ov_ov_vi"
+  },
+  {
+    "id": 12,
+    "emojis": "👨‍🦲🥊💥",
+    "answer": "One Punch Man",
+    "answers": ["one punch man", "onepunchman", "ван панч мэн", "ванпанчмэн", "нэг цохилттой залуу"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://www.imdb.com/title/tt4508902/mediaviewer/rm2887004929/?ref_=tt_ov_i",
+    "video": "https://www.imdb.com/video/vi3474439449/?playlistId=tt4508902&ref_=tt_ov_pr_ov_vi"
+  },
+  {
+    "id": 13,
+    "emojis": "🏐🎒🐦",
+    "answer": "Haikyuu!!",
+    "answers": ["haikyuu", "haikyuu!!", "хайкю", "хайкюу", "волейбол"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://www.imdb.com/title/tt3398540/mediaviewer/rm1636504833/?ref_=tt_ov_i",
+    "video": "https://www.imdb.com/video/vi3276390681/?playlistId=tt3398540&ref_=tt_ov_ov_vi"
+  },
+  {
+    "id": 14,
+    "emojis": "🪚🐶🩸",
+    "answer": "Chainsaw Man",
+    "answers": ["chainsaw man", "chainsawman", "хөрөөт хүн", "чейнсоу мэн"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://www.imdb.com/title/tt13616990/mediaviewer/rm453511169/?ref_=tt_ov_i",
+    "video": ""
+  },
+  {
+    "id": 15,
+    "emojis": "👽👻🏃‍♂️",
+    "answer": "Dandadan",
+    "answers": ["dandadan", "дандадан", "дан да дан"],
+    "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
+    "image": "https://www.imdb.com/title/tt30217403/mediaviewer/rm2013293825/?ref_=tt_ov_i",
+    "video": "https://www.imdb.com/video/vi404867097/?playlistId=tt30217403&ref_=tt_ov_pr_ov_vi"
+  }
+]

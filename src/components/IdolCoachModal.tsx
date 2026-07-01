@@ -177,9 +177,13 @@ export default function IdolCoachModal({ isOpen, onClose }: IdolCoachModalProps)
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+    <div 
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-fade-in cursor-pointer"
+    >
       <div 
-        className="w-full max-w-5xl h-[92vh] md:h-[80vh] p-3 sm:p-5 md:p-6 rounded-2xl liquid-glass text-white shadow-2xl relative border border-white/10 flex flex-col md:flex-row gap-3 md:gap-5 animate-blur-fade-up"
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-5xl h-[92vh] md:h-[80vh] p-3 sm:p-5 md:p-6 rounded-2xl liquid-glass text-white shadow-2xl relative border border-white/10 flex flex-col md:flex-row gap-3 md:gap-5 animate-blur-fade-up cursor-default"
         style={{ animationDelay: "0ms" }}
       >
         {/* Close Button */}

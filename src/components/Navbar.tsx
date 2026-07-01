@@ -9,6 +9,7 @@ interface NavbarProps {
   onSearchClick: () => void;
   onProfileClick: () => void;
   onIdolClick: () => void;
+  onAnimeClick: () => void;
 }
 
 export default function Navbar({
@@ -17,6 +18,7 @@ export default function Navbar({
   onSearchClick,
   onProfileClick,
   onIdolClick,
+  onAnimeClick,
 }: NavbarProps) {
   return (
     <nav className="relative z-50 flex items-center justify-between px-4 sm:px-6 md:px-12 py-4 md:py-6">
@@ -52,6 +54,16 @@ export default function Navbar({
           style={{ animationDelay: `${100 + NAV_LINKS.length * 50}ms` }}
         >
           <span>🤖 My Idol</span>
+        </button>
+
+        {/* "🎮 Anime Guesser" Link */}
+        <button
+          id="nav-link-anime"
+          onClick={onAnimeClick}
+          className="text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors animate-blur-fade-up flex items-center gap-1.5 cursor-pointer"
+          style={{ animationDelay: `${100 + (NAV_LINKS.length + 1) * 50}ms` }}
+        >
+          <span>🎮 Anime Guesser</span>
         </button>
       </div>
 

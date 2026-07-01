@@ -3,9 +3,9 @@ import { MOVIE_SLIDES } from "./types";
 import Navbar from "./components/Navbar";
 import MobileMenu from "./components/MobileMenu";
 import HeroContent from "./components/HeroContent";
-import MinecraftRunner from "./components/MinecraftRunner";
 import IdolCoachModal from "./components/IdolCoachModal";
 import MeAiPopup from "./components/MeAiPopup";
+import AnimeGuesser from "./components/AnimeGuesser";
 import { Search, User, X, Film, Sparkles, CheckCircle, Gamepad2, ArrowLeft, Play } from "lucide-react";
 
 const profileAvatar = "/src/assets/images/flower_avatar_1782704451351.jpg";
@@ -19,12 +19,11 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isIdolModalOpen, setIsIdolModalOpen] = useState(false);
+  const [isAnimeGuesserOpen, setIsAnimeGuesserOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
-  // Game Integration States
-  const [isGameModalOpen, setIsGameModalOpen] = useState(false);
-  const [selectedGame, setSelectedGame] = useState<"among-us" | "geometry-dash" | null>(null);
+
 
   const activeSlide = MOVIE_SLIDES[activeIndex];
 
@@ -51,10 +50,7 @@ export default function App() {
     }
   }, [showToast]);
 
-  const handlePlayNow = () => {
-    setIsGameModalOpen(true);
-    triggerToast("Minecraft Diamond Dash тоглоом ачааллаа! 🎮");
-  };
+
 
   const handleLearnMore = () => {
     setIsProfileOpen(true);
@@ -94,6 +90,11 @@ export default function App() {
           setIsIdolModalOpen(true);
           setIsMenuOpen(false);
         }}
+        onAnimeClick={() => {
+          setIsAnimeGuesserOpen(true);
+          setIsMenuOpen(false);
+          triggerToast("Anime Guesser тоглоом ачааллаа! 🎮");
+        }}
       />
 
       {/* 5. MOBILE DROPDOWN MENU (z-40) */}
@@ -111,6 +112,11 @@ export default function App() {
           setIsIdolModalOpen(true);
           setIsMenuOpen(false);
         }}
+        onAnimeClick={() => {
+          setIsAnimeGuesserOpen(true);
+          setIsMenuOpen(false);
+          triggerToast("Anime Guesser тоглоом ачааллаа! 🎮");
+        }}
       />
 
       {/* 6. PRIMARY HERO CONTENT (z-10) */}
@@ -118,7 +124,6 @@ export default function App() {
         activeSlide={activeSlide}
         onPrev={handlePrev}
         onNext={handleNext}
-        onPlayNow={handlePlayNow}
         onLearnMore={handleLearnMore}
       />
 
@@ -129,10 +134,18 @@ export default function App() {
 
       {/* A. Search Modal */}
       {isSearchOpen && (
-        <div id="search-modal-backdrop" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fade-in">
+        <div 
+          id="search-modal-backdrop" 
+          onClick={() => {
+            setIsSearchOpen(false);
+            setSearchQuery("");
+          }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fade-in cursor-pointer"
+        >
           <div 
             id="search-modal-container"
-            className="w-full max-w-xl p-6 rounded-2xl liquid-glass text-white shadow-2xl relative border border-white/10 animate-blur-fade-up"
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-xl p-6 rounded-2xl liquid-glass text-white shadow-2xl relative border border-white/10 animate-blur-fade-up cursor-default"
             style={{ animationDelay: "0ms" }}
           >
             {/* Header */}
@@ -210,10 +223,15 @@ export default function App() {
 
       {/* B. Profile Modal */}
       {isProfileOpen && (
-        <div id="profile-modal-backdrop" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+        <div 
+          id="profile-modal-backdrop" 
+          onClick={() => setIsProfileOpen(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md cursor-pointer"
+        >
           <div 
             id="profile-modal-container"
-            className="w-full max-w-sm p-6 rounded-2xl liquid-glass text-white shadow-2xl relative border border-white/10 animate-blur-fade-up"
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-sm p-6 rounded-2xl liquid-glass text-white shadow-2xl relative border border-white/10 animate-blur-fade-up cursor-default"
             style={{ animationDelay: "0ms" }}
           >
             {/* Header */}
@@ -251,7 +269,7 @@ export default function App() {
               <div className="w-full mt-5 space-y-3 text-left bg-white/5 p-4 rounded-xl border border-white/10 text-sm">
                 <div className="flex justify-between items-center pb-2 border-b border-white/5">
                   <span className="text-gray-400 text-xs uppercase font-medium">Дуртай тоглоом:</span>
-                  <span className="text-white font-medium">Minecraft, Roblox, Standoff 🎮</span>
+                  <span className="text-white font-medium">Roblox, Standoff 🎮</span>
                 </div>
                 <div className="flex justify-between items-center pb-2 border-b border-white/5">
                   <span className="text-gray-400 text-xs uppercase font-medium">Хобби:</span>
@@ -261,18 +279,26 @@ export default function App() {
                   <span className="text-gray-400 text-xs uppercase font-medium">Дуртай кино:</span>
                   <span className="text-white font-medium">Хэрри Поттер ⚡</span>
                 </div>
-                <div className="flex flex-col gap-1 pb-2 border-b border-white/5">
-                  <span className="text-gray-400 text-xs uppercase font-medium">Дуртай дуу:</span>
-                  <a 
-                    href="https://g.co/gemini/share/56a86724122d"
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-yellow-400 hover:text-yellow-300 font-medium flex items-center gap-1.5 transition-colors group/song"
-                  >
-                    <span className="animate-pulse">🎵</span>
-                    <span className="underline underline-offset-4 decoration-yellow-400/30 group-hover/song:decoration-yellow-400">Сайханбилэгийн дууг сонсох</span>
-                    <span className="text-[10px] bg-yellow-400/10 text-yellow-400 border border-yellow-400/20 px-1.5 py-0.5 rounded font-normal shrink-0">Линк</span>
-                  </a>
+                <div className="flex flex-col gap-2 pb-2 border-b border-white/5">
+                  <span className="text-gray-400 text-xs uppercase font-medium">Дуртай дуу, хамтлаг:</span>
+                  <div className="flex flex-col gap-1.5 pl-1">
+                    <span className="text-white text-xs font-medium flex items-center gap-1.5">
+                      <span>🎵</span>
+                      <span>Metronome — izna</span>
+                    </span>
+                    <span className="text-white text-xs font-medium flex items-center gap-1.5">
+                      <span>🎵</span>
+                      <span>Lovesick Girls — BLACKPINK</span>
+                    </span>
+                    <span className="text-white text-xs font-medium flex items-center gap-1.5">
+                      <span>🎵</span>
+                      <span>Iconic — LE SSERAFIM</span>
+                    </span>
+                    <span className="text-white text-xs font-medium flex items-center gap-1.5">
+                      <span>🎵</span>
+                      <span>ILLIT, KATSEYE</span>
+                    </span>
+                  </div>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-400 text-xs uppercase font-medium">Имэйл:</span>
@@ -280,17 +306,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Info Stats */}
-              <div className="grid grid-cols-2 gap-4 w-full mt-4 pt-4 border-t border-white/10">
-                <div className="text-center">
-                  <span className="block text-xl font-semibold font-mono">324</span>
-                  <span className="text-[10px] text-gray-400 uppercase tracking-widest font-medium">Үзсэн</span>
-                </div>
-                <div className="text-center">
-                  <span className="block text-xl font-semibold font-mono">58</span>
-                  <span className="text-[10px] text-gray-400 uppercase tracking-widest font-medium">Сэтгэгдэл</span>
-                </div>
-              </div>
+              {/* Info Stats block has been removed */}
             </div>
 
             {/* Simple logout/preference actions */}
@@ -318,62 +334,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Game Modal - Interactive Minecraft Diamond Dash */}
-      {isGameModalOpen && (
-        <div id="game-modal-backdrop" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-          <div 
-            id="game-modal-container"
-            className="w-full max-w-4xl p-6 rounded-2xl liquid-glass text-white shadow-2xl relative border border-white/10 flex flex-col justify-between animate-blur-fade-up"
-            style={{ animationDelay: "0ms" }}
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-4">
-              <div className="flex items-center gap-3">
-                <Gamepad2 size={24} className="text-yellow-400" />
-                <div>
-                  <h3 className="text-xl font-bold tracking-wide flex items-center gap-2">
-                    Minecraft Diamond Dash
-                    <span className="text-[10px] bg-yellow-400/20 text-yellow-400 border border-yellow-400/30 px-2 py-0.5 rounded font-mono font-normal">
-                      Play Now
-                    </span>
-                  </h3>
-                  <p className="text-xs text-gray-400">
-                    Сайханбилэгийн дуртай Minecraft болон Runner тоглоомуудын нэгдэл
-                  </p>
-                </div>
-              </div>
-              <button 
-                id="btn-close-game-modal"
-                onClick={() => {
-                  setIsGameModalOpen(false);
-                }}
-                className="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all cursor-pointer"
-              >
-                <X size={18} />
-              </button>
-            </div>
 
-            {/* Content Body */}
-            <div className="flex-1 flex flex-col items-center justify-center overflow-hidden min-h-[350px] w-full">
-              <MinecraftRunner />
-            </div>
-
-            {/* Footer */}
-            <div className="border-t border-white/10 pt-4 mt-4 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-3">
-              <div>
-                <span className="flex items-center gap-1.5 text-green-400 font-medium">
-                  <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                  100% Апп дотроо шууд ажиллах тоглоом
-                </span>
-              </div>
-              <div className="flex gap-4">
-                <span>Сайханбилэг 12 Нас ⚡</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      )}
 
       {/* C. Interactive Glass Toast Notifications */}
       {showToast && (
@@ -400,6 +361,11 @@ export default function App() {
 
       {/* D. Idol Coach Modal */}
       <IdolCoachModal isOpen={isIdolModalOpen} onClose={() => setIsIdolModalOpen(false)} />
+
+      {/* F. Anime Guesser Game Modal */}
+      {isAnimeGuesserOpen && (
+        <AnimeGuesser onClose={() => setIsAnimeGuesserOpen(false)} />
+      )}
 
       {/* E. Messenger-style Me-AI Assistant Popup */}
       <MeAiPopup />

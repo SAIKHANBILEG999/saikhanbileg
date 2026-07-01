@@ -8,6 +8,7 @@ interface MobileMenuProps {
   onSearchClick: () => void;
   onProfileClick: () => void;
   onIdolClick: () => void;
+  onAnimeClick: () => void;
 }
 
 export default function MobileMenu({
@@ -15,6 +16,7 @@ export default function MobileMenu({
   onSearchClick,
   onProfileClick,
   onIdolClick,
+  onAnimeClick,
 }: MobileMenuProps) {
   return (
     <div
@@ -57,6 +59,22 @@ export default function MobileMenu({
           }}
         >
           <span>🤖 My Idol</span>
+        </button>
+
+        {/* "🎮 Anime Guesser" Link */}
+        <button
+          id="mobile-nav-link-anime"
+          onClick={onAnimeClick}
+          className={`text-base font-medium text-cyan-400 hover:text-cyan-300 hover:bg-white/5 py-3 px-4 rounded-xl transition-all duration-300 text-left flex items-center gap-2 transform cursor-pointer ${
+            isOpen
+              ? "translate-x-0 opacity-100"
+              : "translate-x-4 opacity-0"
+          }`}
+          style={{
+            transitionDelay: `${(NAV_LINKS.length + 1) * 50}ms`,
+          }}
+        >
+          <span>🎮 Anime Guesser</span>
         </button>
       </div>
 
