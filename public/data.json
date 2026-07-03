@@ -6,7 +6,8 @@
     "answers": ["one piece", "onepiece", "ван пийс", "ванпийс", "вон пис"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
     "image": "https://dw9to29mmj727.cloudfront.net/promo/2016/5265-SeriesHeaders_OP_2000x800_wm.jpg",
-    "video": "https://www.youtube.com/embed/MCb133932Qs"
+    "video": "https://www.youtube.com/watch?v=l_98K4_RRL0",
+    "type": "anime"
   },
   {
     "id": 2,
@@ -15,7 +16,8 @@
     "answers": ["naruto", "наруто", "нарото"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
     "image": "https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg",
-    "video": "https://www.youtube.com/embed/Q73D7Cg_m7E"
+    "video": "https://www.youtube.com/watch?v=2mWgA_vS96I",
+    "type": "anime"
   },
   {
     "id": 3,
@@ -24,7 +26,8 @@
     "answers": ["demon slayer", "demonslayer", "демон слэйер", "чөтгөр дарагч", "чөтгөрийг дарагч", "kimetsu no yaiba"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
     "image": "https://m.media-amazon.com/images/M/MV5BMWU1OGEwNmQtNGM3MS00YTYyLThmYmMtN2FjYzQzNzNmNTE0XkEyXkFqcGc@._V1_.jpg",
-    "video": "https://www.youtube.com/embed/VQGCKyVZIM4"
+    "video": "https://www.youtube.com/watch?v=6vMuWuWlWsc",
+    "type": "anime"
   },
   {
     "id": 4,
@@ -32,8 +35,9 @@
     "answer": "Attack on titan",
     "answers": ["attack on titan", "attackontitan", "атака титанов", "титануудын дайралт", "shingeki no kyojin"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
-    "image": "https://www.imdb.com/title/tt2560140/mediaviewer/rm2027632897/?ref_=tt_ov_i",
-    "video": "https://www.youtube.com/embed/MGRm4IzK1SQ"
+    "image": "https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p10701949_b_v8_ah.jpg",
+    "video": "https://www.youtube.com/watch?v=8OkpRKipg40",
+    "type": "anime"
   },
   {
     "id": 5,
@@ -41,8 +45,9 @@
     "answer": "Death Note",
     "answers": ["death note", "deathnote", "үхлийн тэмдэглэл", "дэс ноут"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
-    "image": "https://www.imdb.com/title/tt0877057/mediaviewer/rm2829388289/?ref_=tt_ov_i",
-    "video": "https://www.youtube.com/embed/N3iF0z7_DVo"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE-s9JscbcqNhv5TVEvqhf3-mJDkX7FZ3YJTgMSjT-pg&s",
+    "video": "https://www.youtube.com/watch?v=8QE9cmfxx4s",
+    "type": "anime"
   },
   {
     "id": 6,
@@ -50,8 +55,9 @@
     "answer": "My Hero Academia",
     "answers": ["my hero academia", "myheroacademia", "миний баатарлаг академи", "boku no hero academia"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
-    "image": "https://www.imdb.com/title/tt5626028/mediaviewer/rm3793717250/?ref_=tt_ov_i",
-    "video": "https://www.youtube.com/embed/EP7G_vWv_wI"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQveudNsHejDI-JmyAmvlmMa6zv918VSTCDzPWqf6AAJw&s=10",
+    "video": "https://www.youtube.com/watch?v=-77UEct0Ky0",
+    "type": "anime"
   },
   {
     "id": 7,
@@ -59,8 +65,9 @@
     "answer": "Dragon Ball",
     "answers": ["dragon ball", "dragonball", "драгон балл", "драгонболл"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
-    "image": "https://www.imdb.com/title/tt0121220/mediaviewer/rm2579038720/?ref_=tt_ov_i",
-    "video": "https://www.youtube.com/embed/Uo-vL_WfShY"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ_yufUazNMRhULYuSH5XhslPPsK5MT-JmOOon8WtJ6w&s=10",
+    "video": "https://www.youtube.com/watch?v=CH7gHeN3Z6I",
+    "type": "anime"
   },
   {
     "id": 8,
@@ -68,8 +75,9 @@
     "answer": "Jujutsu Kaisen",
     "answers": ["jujutsu kaisen", "jujutsukaisen", "жүжүцү кайсэн", "шидний тулаан"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
-    "image": "https://www.imdb.com/title/tt12343534/mediaviewer/rm1791402498/?ref_=tt_ov_i",
-    "video": "https://www.youtube.com/embed/yv5f_NAtLKs"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQO5X8INKNniDB5IRtGmTV1aXCOpEPpgAFVOU_o5n-oUg&s=10",
+    "video": "https://www.youtube.com/watch?v=hB8SPOXidr8",
+    "type": "anime"
   },
   {
     "id": 9,
@@ -77,8 +85,9 @@
     "answer": "Hunter X Hunter",
     "answers": ["hunter x hunter", "hunterxhunter", "хантер хантер", "хантер х хантер"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
-    "image": "https://www.imdb.com/title/tt2098220/mediaviewer/rm3767801089/?ref_=tt_ov_i",
-    "video": ""
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLYwY12mnQ4o2D51taXncJf2LGQ-SX4Y63cStG5aZHyA&s=10",
+    "video": "https://www.youtube.com/watch?v=faqmNf_t13U",
+    "type": "anime"
   },
   {
     "id": 10,
@@ -86,8 +95,9 @@
     "answer": "Fullmetal Alchemist",
     "answers": ["fullmetal alchemist", "fullmetalalchemist", "ган төмөр алхимич", "фуллметал алхимист"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
-    "image": "https://www.imdb.com/title/tt1355642/mediaviewer/rm4007074048/?ref_=tt_ov_i",
-    "video": "https://www.imdb.com/video/vi4196311833/?playlistId=tt1355642&ref_=tt_ov_ov_vi"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE-9jOxwc9V_lil_WCq7JaZNjqecg-ADF-hXwO80w4kQ&s=10",
+    "video": "https://www.youtube.com/watch?v=BOM_S8L2A7A",
+    "type": "anime"
   },
   {
     "id": 11,
@@ -95,8 +105,9 @@
     "answer": "Bleach",
     "answers": ["bleach", "блич", "блийч"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
-    "image": "https://www.imdb.com/title/tt0434665/mediaviewer/rm3912898816/?ref_=tt_ov_i",
-    "video": "https://www.imdb.com/video/vi2667095577/?playlistId=tt0434665&ref_=tt_ov_ov_vi"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9iqrV1UGUQtrxa7TeSuGSyjiYC7D7n8JcxzeV4-pvjw&s=10",
+    "video": "https://www.youtube.com/watch?v=e8YnZf923ic",
+    "type": "anime"
   },
   {
     "id": 12,
@@ -104,8 +115,9 @@
     "answer": "One Punch Man",
     "answers": ["one punch man", "onepunchman", "ван панч мэн", "ванпанчмэн", "нэг цохилттой залуу"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
-    "image": "https://www.imdb.com/title/tt4508902/mediaviewer/rm2887004929/?ref_=tt_ov_i",
-    "video": "https://www.imdb.com/video/vi3474439449/?playlistId=tt4508902&ref_=tt_ov_pr_ov_vi"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8Ep_Y6ZrX2R2m3daKOOxoQpOSVKM-plRydTGrDnG32g&s=10",
+    "video": "https://www.youtube.com/watch?v=exCYSr_gbyM",
+    "type": "anime"
   },
   {
     "id": 13,
@@ -113,8 +125,9 @@
     "answer": "Haikyuu!!",
     "answers": ["haikyuu", "haikyuu!!", "хайкю", "хайкюу", "волейбол"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
-    "image": "https://www.imdb.com/title/tt3398540/mediaviewer/rm1636504833/?ref_=tt_ov_i",
-    "video": "https://www.imdb.com/video/vi3276390681/?playlistId=tt3398540&ref_=tt_ov_ov_vi"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6jJlvO5E9KNWhVkYH-kGHNgLmbvNzYzu_uIRG98EEsw&s=10",
+    "video": "https://www.youtube.com/watch?v=1pE6W9h3m-E",
+    "type": "anime"
   },
   {
     "id": 14,
@@ -122,8 +135,9 @@
     "answer": "Chainsaw Man",
     "answers": ["chainsaw man", "chainsawman", "хөрөөт хүн", "чейнсоу мэн"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
-    "image": "https://www.imdb.com/title/tt13616990/mediaviewer/rm453511169/?ref_=tt_ov_i",
-    "video": ""
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXWEpKyhQHp7Khc-PD0pJqK_v-93YuvdEAe8w6AQojEA&s=10",
+    "video": "https://www.youtube.com/watch?v=jk7Q59_Ypwc",
+    "type": "anime"
   },
   {
     "id": 15,
@@ -131,7 +145,158 @@
     "answer": "Dandadan",
     "answers": ["dandadan", "дандадан", "дан да дан"],
     "options": ["One Piece", "Naruto", "Bleach", "Dragon Ball", "Attack on titan", "Fullmetal Alchemist", "Hunter X Hunter", "Death Note", "Haikyuu!!", "One Punch Man", "Demon Slayer", "Jujutsu Kaisen", "Chainsaw Man", "Dandadan", "My Hero Academia"],
-    "image": "https://www.imdb.com/title/tt30217403/mediaviewer/rm2013293825/?ref_=tt_ov_i",
-    "video": "https://www.imdb.com/video/vi404867097/?playlistId=tt30217403&ref_=tt_ov_pr_ov_vi"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyjuB28SMQ1dhK8yvhBjz5IaPj2D4LS-9G-LXf_C0pOg&s=10",
+    "video": "https://www.youtube.com/watch?v=MInZ6B87nRs",
+    "type": "anime"
+  },
+  {
+    "id": 16,
+    "emojis": "👑👒🍖🏴‍☠️",
+    "answer": "Monkey D. Luffy",
+    "answers": ["luffy", "monkey d luffy", "луффи", "лүүфи"],
+    "options": ["Monkey D. Luffy", "Roronoa Zoro", "Sanji", "Portgas D. Ace", "Trafalgar Law", "Shanks", "Kaido", "Nami", "Usopp", "Tony Tony Chopper"],
+    "image": "https://static.wikia.nocookie.net/onepiece/images/a/af/Monkey_D._Luffy_Anime_Post_Timeskip_Infobox.png",
+    "video": "https://www.youtube.com/watch?v=0YV4I441eF8",
+    "type": "character"
+  },
+  {
+    "id": 17,
+    "emojis": "🦊🌀🍜🐸",
+    "answer": "Naruto Uzumaki",
+    "answers": ["naruto", "naruto uzumaki", "наруто"],
+    "options": ["Naruto Uzumaki", "Sasuke Uchiha", "Kakashi Hatake", "Sakura Haruno", "Itachi Uchiha", "Gaara", "Jiraiya", "Minato Namikaze", "Obito Uchiha", "Madara Uchiha"],
+    "image": "https://static.wikia.nocookie.net/naruto/images/d/d6/Naruto_Part_I.png",
+    "video": "https://www.youtube.com/watch?v=2mWgA_vS96I",
+    "type": "character"
+  },
+  {
+    "id": 18,
+    "emojis": "👺⚔️🌊🐗",
+    "answer": "Tanjiro Kamado",
+    "answers": ["tanjiro", "tanjiro kamado", "танжиро", "танжиро камадо"],
+    "options": ["Tanjiro Kamado", "Nezuko Kamado", "Zenitsu Agatsuma", "Inosuke Hashibira", "Giyu Tomioka", "Kyojuro Rengoku", "Muzan Kibutsuji", "Shinobu Kocho"],
+    "image": "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/7/70/Tanjiro_Anime_Design.png",
+    "video": "https://www.youtube.com/watch?v=6vMuWuWlWsc",
+    "type": "character"
+  },
+  {
+    "id": 19,
+    "emojis": "🐒🥋🔥👑",
+    "answer": "Son Goku",
+    "answers": ["goku", "son goku", "гоку"],
+    "options": ["Son Goku", "Vegeta", "Gohan", "Piccolo", "Frieza", "Trunks", "Majin Buu", "Cell", "Krillin", "Bulma"],
+    "image": "https://static.wikia.nocookie.net/dragonball/images/5/5b/Goku_Dragon_Ball_Super.png",
+    "video": "https://www.youtube.com/watch?v=CH7gHeN3Z6I",
+    "type": "character"
+  },
+  {
+    "id": 20,
+    "emojis": "⚔️⚔️⚔️🟢",
+    "answer": "Roronoa Zoro",
+    "answers": ["zoro", "roronoa zoro", "зоро"],
+    "options": ["Monkey D. Luffy", "Roronoa Zoro", "Sanji", "Portgas D. Ace", "Trafalgar Law", "Shanks", "Mihawk", "Nami"],
+    "image": "https://static.wikia.nocookie.net/onepiece/images/5/52/Roronoa_Zoro_Anime_Post_Timeskip_Infobox.png",
+    "video": "https://www.youtube.com/watch?v=l_98K4_RRL0",
+    "type": "character"
+  },
+  {
+    "id": 21,
+    "emojis": "⚡👁️🔥🐦",
+    "answer": "Sasuke Uchiha",
+    "answers": ["sasuke", "sasuke uchiha", "сасүкэ", "сасүке"],
+    "options": ["Naruto Uzumaki", "Sasuke Uchiha", "Kakashi Hatake", "Sakura Haruno", "Itachi Uchiha", "Madara Uchiha", "Gaara", "Orochimaru"],
+    "image": "https://static.wikia.nocookie.net/naruto/images/2/21/Sasuke_Part_1.png",
+    "video": "https://www.youtube.com/watch?v=2mWgA_vS96I",
+    "type": "character"
+  },
+  {
+    "id": 22,
+    "emojis": "🎋📦🎀🌸",
+    "answer": "Nezuko Kamado",
+    "answers": ["nezuko", "nezuko kamado", "незүко", "незуко"],
+    "options": ["Tanjiro Kamado", "Nezuko Kamado", "Zenitsu Agatsuma", "Inosuke Hashibira", "Giyu Tomioka", "Kyojuro Rengoku", "Shinobu Kocho", "Kanao Tsuyuri"],
+    "image": "https://static.wikia.nocookie.net/kimetsu-no-yaiba/images/f/f6/Nezuko_Anime_Design.png",
+    "video": "https://www.youtube.com/watch?v=6vMuWuWlWsc",
+    "type": "character"
+  },
+  {
+    "id": 23,
+    "emojis": "🕶️🔵🤞♾️",
+    "answer": "Satoru Gojo",
+    "answers": ["gojo", "satoru gojo", "гожо", "гожү"],
+    "options": ["Satoru Gojo", "Yuji Itadori", "Megumi Fushiguro", "Nobara Kugisaki", "Kento Nanami", "Suguru Geto", "Ryomen Sukuna", "Maki Zen'in"],
+    "image": "https://static.wikia.nocookie.net/jujutsu-kaisen/images/8/88/Satoru_Gojo_Anime_Design.png",
+    "video": "https://www.youtube.com/watch?v=hB8SPOXidr8",
+    "type": "character"
+  },
+  {
+    "id": 24,
+    "emojis": "🧹⚔️🍵🧣",
+    "answer": "Levi Ackerman",
+    "answers": ["levi", "levi ackerman", "леви"],
+    "options": ["Levi Ackerman", "Eren Jaeger", "Mikasa Ackerman", "Armin Arlert", "Erwin Smith", "Reiner Braun", "Hange Zoë", "Sasha Blouse"],
+    "image": "https://static.wikia.nocookie.net/shingekinokyojin/images/9/94/Levi_Ackermann_Character_Design_%28Anime%29.png",
+    "video": "https://www.youtube.com/watch?v=8OkpRKipg40",
+    "type": "character"
+  },
+  {
+    "id": 25,
+    "emojis": "🍭💻🔍🍎",
+    "answer": "L Lawliet",
+    "answers": ["l", "l lawliet", "эл"],
+    "options": ["L Lawliet", "Light Yagami", "Ryuk", "Misa Amane", "Near", "Mello"],
+    "image": "https://static.wikia.nocookie.net/deathnote/images/8/8f/L_Anime.png",
+    "video": "https://www.youtube.com/watch?v=8QE9cmfxx4s",
+    "type": "character"
+  },
+  {
+    "id": 26,
+    "emojis": "🧱🦖🩸⛓️",
+    "answer": "Eren Jaeger",
+    "answers": ["eren", "eren jaeger", "эрен"],
+    "options": ["Levi Ackerman", "Eren Jaeger", "Mikasa Ackerman", "Armin Arlert", "Erwin Smith", "Zeke Jaeger", "Reiner Braun", "Jean Kirschtein"],
+    "image": "https://static.wikia.nocookie.net/shingekinokyojin/images/a/a1/Eren_Jaeger_Character_Design_%28Anime%29.png",
+    "video": "https://www.youtube.com/watch?v=8OkpRKipg40",
+    "type": "character"
+  },
+  {
+    "id": 27,
+    "emojis": "🥊🥚💥🧑‍🦲",
+    "answer": "Saitama",
+    "answers": ["saitama", "сайтама"],
+    "options": ["Saitama", "Genos", "Garou", "Mumen Rider", "Speed-o'-Sound Sonic", "Tatsumaki", "Fubuki", "Bang"],
+    "image": "https://static.wikia.nocookie.net/onepunchman/images/b/b3/Saitama_Anime_Profile.png",
+    "video": "https://www.youtube.com/watch?v=exCYSr_gbyM",
+    "type": "character"
+  },
+  {
+    "id": 28,
+    "emojis": "🥦💥🏫🦸‍♂️",
+    "answer": "Izuku Midoriya",
+    "answers": ["deku", "izuku", "izuku midoriya", "дэкү", "изуку"],
+    "options": ["Izuku Midoriya", "Katsuki Bakugo", "Shoto Todoroki", "All Might", "Ochaco Uraraka", "Tenya Iida", "Tsuyu Asui", "Shota Aizawa"],
+    "image": "https://static.wikia.nocookie.net/bokunoheroacademia/images/b/be/Izuku_Midoriya_Anime_Hero_Costume_Design_Post-War.png",
+    "video": "https://www.youtube.com/watch?v=-77UEct0Ky0",
+    "type": "character"
+  },
+  {
+    "id": 29,
+    "emojis": "⚡🍫🛹🕷️",
+    "answer": "Killua Zoldyck",
+    "answers": ["killua", "killua zoldyck", "киллуа"],
+    "options": ["Killua Zoldyck", "Gon Freecss", "Kurapika", "Leorio Paradinight", "Hisoka Morow", "Chrollo Lucilfer", "Illumi Zoldyck", "Isaac Netero"],
+    "image": "https://static.wikia.nocookie.net/hunterxhunter/images/b/b1/Killua_Zoldyck_2011_Design.png",
+    "video": "https://www.youtube.com/watch?v=faqmNf_t13U",
+    "type": "character"
+  },
+  {
+    "id": 30,
+    "emojis": "🐕⚡📔👁️",
+    "answer": "Kakashi Hatake",
+    "answers": ["kakashi", "kakashi hatake", "какаши"],
+    "options": ["Naruto Uzumaki", "Sasuke Uchiha", "Kakashi Hatake", "Sakura Haruno", "Itachi Uchiha", "Obito Uchiha", "Might Guy", "Jiraiya"],
+    "image": "https://static.wikia.nocookie.net/naruto/images/2/27/Kakashi_Hatake.png",
+    "video": "https://www.youtube.com/watch?v=2mWgA_vS96I",
+    "type": "character"
   }
 ]

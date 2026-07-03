@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Gamepad2, Heart, Timer, Trophy, RotateCcw, Volume2, Sparkles, X, ChevronRight, Play } from "lucide-react";
+import { Gamepad2, Heart, Timer, Trophy, RotateCcw, Volume2, Sparkles, X, ChevronRight, Play, Users, Award } from "lucide-react";
+import { saveScore } from "../lib/firebase";
+import Leaderboard from "./Leaderboard";
 
 interface Question {
   id: number;
@@ -10,14 +12,42 @@ interface Question {
   options: string[];
   image: string;
   video: string;
+  type?: "anime" | "character";
 }
 
 interface AnimeGuesserProps {
   onClose: () => void;
 }
 
+// Helper to convert standard YouTube watch links to embed links
+function getYouTubeEmbedUrl(url: string): string {
+  if (!url) return "";
+  try {
+    let videoId = "";
+    if (url.includes("youtube.com/embed/")) {
+      videoId = url.split("youtube.com/embed/")[1]?.split(/[?#]/)[0];
+    } else if (url.includes("youtube-nocookie.com/embed/")) {
+      videoId = url.split("youtube-nocookie.com/embed/")[1]?.split(/[?#]/)[0];
+    } else if (url.includes("youtu.be/")) {
+      videoId = url.split("youtu.be/")[1]?.split(/[?#]/)[0];
+    } else if (url.includes("youtube.com/watch")) {
+      const urlParams = new URLSearchParams(url.split("?")[1]);
+      videoId = urlParams.get("v") || "";
+    } else if (url.includes("youtube.com/v/")) {
+      videoId = url.split("youtube.com/v/")[1]?.split(/[?#]/)[0];
+    }
+    
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+  } catch (e) {
+    console.error("Error parsing YouTube URL:", e);
+  }
+  return url;
+}
+
 // Browser-synthesized Web Audio effects so we don't depend on static files
-const playSound = (type: "ding" | "buzz" | "bonus") => {
+const playSound = (type: "ding" | "buzz" | "bonus" | "hint") => {
   try {
     const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
     
@@ -61,6 +91,21 @@ const playSound = (type: "ding" | "buzz" | "bonus") => {
         osc.start(ctx.currentTime + index * 0.1);
         osc.stop(ctx.currentTime + index * 0.1 + 0.25);
       });
+    } else if (type === "hint") {
+      // Shimmering magic sweep
+      const freqs = [587.33, 659.25, 783.99, 880.00, 1046.50]; // D5, E5, G5, A5, C6
+      freqs.forEach((freq, index) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + index * 0.05);
+        gain.gain.setValueAtTime(0.06, ctx.currentTime + index * 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + index * 0.05 + 0.2);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + index * 0.05);
+        osc.stop(ctx.currentTime + index * 0.05 + 0.2);
+      });
     } else {
       // Low dual saw buzzer (dissonant 110Hz and 115Hz for harsh buzzer)
       const osc1 = ctx.createOscillator();
@@ -93,6 +138,7 @@ const playSound = (type: "ding" | "buzz" | "bonus") => {
 };
 
 export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
+  const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -101,6 +147,13 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
   const [timeLeft, setTimeLeft] = useState(30);
   const [gameState, setGameState] = useState<"loading" | "intro" | "playing" | "answered" | "gameover" | "win">("loading");
   
+  // Custom game mode and leaderboards states
+  const [gameMode, setGameMode] = useState<"anime" | "character">("anime");
+  const [playerName, setPlayerName] = useState("");
+  const [savingScore, setSavingScore] = useState(false);
+  const [scoreSaved, setScoreSaved] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+
   // Input states
   const [textInput, setTextInput] = useState("");
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -109,6 +162,11 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
   const [shakeButton, setShakeButton] = useState<string | null>(null);
   const [showBonusAlert, setShowBonusAlert] = useState(false);
 
+  // Hint states
+  const [hintsLeft, setHintsLeft] = useState(3);
+  const [hintUsedForCurrentQuestion, setHintUsedForCurrentQuestion] = useState(false);
+  const [eliminatedChoices, setEliminatedChoices] = useState<string[]>([]);
+
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Fetch questions from data.json
@@ -116,7 +174,9 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
     fetch("/data.json")
       .then((res) => res.json())
       .then((data: Question[]) => {
-        setQuestions(data);
+        setAllQuestions(data);
+        const filtered = data.filter((q) => (q.type || "anime") === "anime");
+        setQuestions(filtered);
         setGameState("intro");
       })
       .catch((err) => {
@@ -129,8 +189,9 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
             answer: "One Piece",
             answers: ["one piece", "onepiece", "ван пийс", "ванпийс"],
             options: ["One Piece", "Naruto", "Bleach", "Dragon Ball"],
-            image: "https://cdn.myanimelist.net/images/anime/1244/138851.jpg",
-            video: "https://www.youtube.com/embed/MCb133932Qs"
+            image: "https://dw9to29mmj727.cloudfront.net/promo/2016/5265-SeriesHeaders_OP_2000x800_wm.jpg",
+            video: "",
+            type: "anime"
           },
           {
             id: 2,
@@ -138,14 +199,17 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
             answer: "Naruto",
             answers: ["naruto", "наруто"],
             options: ["Naruto", "Dragon Ball", "One Piece", "My Hero Academia"],
-            image: "https://cdn.myanimelist.net/images/anime/13/75509.jpg",
-            video: "https://www.youtube.com/embed/Q73D7Cg_m7E"
+            image: "https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg",
+            video: "",
+            type: "anime"
           }
         ];
+        setAllQuestions(fallback);
         setQuestions(fallback);
         setGameState("intro");
       });
   }, []);
+
 
   // Generate 4 dynamic choices for the current question
   useEffect(() => {
@@ -274,6 +338,8 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
     setTextInput("");
     setSelectedOption(null);
     setIsCorrect(false);
+    setHintUsedForCurrentQuestion(false);
+    setEliminatedChoices([]);
 
     if (currentIndex + 1 >= questions.length) {
       setGameState("win");
@@ -283,7 +349,11 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
     }
   };
 
-  const restartGame = () => {
+  const startGame = (selectedMode: "anime" | "character") => {
+    setGameMode(selectedMode);
+    const filtered = allQuestions.filter((q) => (q.type || "anime") === selectedMode);
+    const shuffled = [...filtered].sort(() => 0.5 - Math.random());
+    setQuestions(shuffled);
     setCurrentIndex(0);
     setScore(0);
     setLives(3);
@@ -291,7 +361,102 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
     setTextInput("");
     setSelectedOption(null);
     setIsCorrect(false);
+    setScoreSaved(false);
+    setPlayerName("");
+    setHintsLeft(3);
+    setHintUsedForCurrentQuestion(false);
+    setEliminatedChoices([]);
     setGameState("playing");
+  };
+
+  const restartGame = () => {
+    const filtered = allQuestions.filter((q) => (q.type || "anime") === gameMode);
+    const shuffled = [...filtered].sort(() => 0.5 - Math.random());
+    setQuestions(shuffled);
+    setCurrentIndex(0);
+    setScore(0);
+    setLives(3);
+    setConsecutive(0);
+    setTextInput("");
+    setSelectedOption(null);
+    setIsCorrect(false);
+    setScoreSaved(false);
+    setHintsLeft(3);
+    setHintUsedForCurrentQuestion(false);
+    setEliminatedChoices([]);
+    setGameState("playing");
+  };
+
+  const handleUseHint = () => {
+    if (gameState !== "playing" || hintUsedForCurrentQuestion || hintsLeft <= 0 || !questions[currentIndex]) return;
+
+    const currentQuestion = questions[currentIndex];
+    const correctAnswer = currentQuestion.answer;
+
+    // Play hint sound
+    playSound("hint");
+
+    // Deduct 1 hint from total
+    setHintsLeft((prev) => prev - 1);
+    setHintUsedForCurrentQuestion(true);
+
+    // Filter out incorrect choices from current choices, then shuffle and choose 2 of them to eliminate
+    const incorrectChoices = currentChoices.filter(
+      (choice) => choice.toLowerCase() !== correctAnswer.toLowerCase() && choice !== ""
+    );
+
+    const shuffledIncorrect = [...incorrectChoices].sort(() => 0.5 - Math.random());
+    const toEliminate = shuffledIncorrect.slice(0, 2);
+
+    setEliminatedChoices(toEliminate);
+  };
+
+  const handleSaveScoreSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!playerName.trim()) return;
+    setSavingScore(true);
+    try {
+      await saveScore(playerName.trim(), score, gameMode);
+      setScoreSaved(true);
+    } catch (err) {
+      console.error("Error saving score:", err);
+    } finally {
+      setSavingScore(false);
+    }
+  };
+
+  const renderScoreSubmission = () => {
+    if (scoreSaved) {
+      return (
+        <div className="w-full max-w-sm mt-3 animate-fade-in">
+          <Leaderboard mode={gameMode} />
+        </div>
+      );
+    }
+
+    return (
+      <form onSubmit={handleSaveScoreSubmit} className="w-full max-w-xs space-y-2 bg-white/5 border border-white/10 rounded-2xl p-4 mt-2">
+        <span className="text-[10px] uppercase text-gray-400 tracking-wider block font-bold text-center">Оноогоо самбарт хадгалах</span>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            required
+            placeholder="Таны нэр..."
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+            disabled={savingScore}
+            className="flex-1 bg-white/5 border border-white/15 rounded-xl py-2 px-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500 transition-all text-center"
+          />
+          <button
+            type="submit"
+            disabled={savingScore || !playerName.trim()}
+            className="bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-700 disabled:text-gray-400 active:scale-95 text-black px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap"
+          >
+            {savingScore ? "Бүртгэж байна..." : "Хадгалах"}
+          </button>
+        </div>
+      </form>
+    );
   };
 
   const currentQuestion = questions[currentIndex];
@@ -312,7 +477,7 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
 
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl h-[92vh] sm:h-[85vh] p-4 sm:p-6 rounded-2xl liquid-glass text-white shadow-2xl relative border border-white/10 flex flex-col justify-between animate-blur-fade-up cursor-default overflow-y-auto no-scrollbar"
+        className="w-full max-w-2xl max-h-[92vh] sm:max-h-[85vh] h-auto p-4 sm:p-6 rounded-2xl liquid-glass text-white shadow-2xl relative border border-white/10 flex flex-col justify-start gap-4 sm:gap-5 animate-blur-fade-up cursor-default overflow-y-auto"
       >
         {/* Close Button */}
         <button
@@ -332,52 +497,113 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
 
         {/* INTRO / START SCREEN */}
         {gameState === "intro" && (
-          <div className="flex-1 flex flex-col items-center justify-center text-center px-4 py-6 space-y-6">
-            <div className="w-20 h-20 bg-yellow-400/10 rounded-2xl flex items-center justify-center border border-yellow-400/20 shadow-lg shadow-yellow-500/5">
-              <Gamepad2 size={40} className="text-yellow-400" />
+          <div className="flex-1 flex flex-col items-center justify-start text-center px-2 py-4 space-y-5">
+            <div className="w-16 h-16 bg-yellow-400/10 rounded-2xl flex items-center justify-center border border-yellow-400/20 shadow-lg shadow-yellow-500/5">
+              <Gamepad2 size={36} className="text-yellow-400" />
             </div>
             
-            <div className="space-y-2">
-              <h2 className="text-2xl sm:text-3xl font-black tracking-wider text-white">ANIME EMOJI GUESSER</h2>
-              <p className="text-yellow-400 text-xs tracking-widest uppercase font-mono">Сайханбилэгийн тусгай тоглоом</p>
+            <div className="space-y-1">
+              <h2 className="text-xl sm:text-2xl font-black tracking-wider text-white">ANIME GUESSER CHALLENGE</h2>
+              <p className="text-yellow-400 text-[10px] tracking-widest uppercase font-mono">Сайханбилэгийн тусгай тоглоом</p>
             </div>
 
-            <div className="max-w-md bg-white/5 p-4 rounded-xl border border-white/5 text-left text-xs sm:text-sm text-gray-300 space-y-2.5">
-              <div className="flex items-center gap-2">
-                <Sparkles size={16} className="text-yellow-400 shrink-0" />
-                <span>Асуулт бүр 4 сонголттой, зөв хариулбал <strong className="text-white">+10 оноо</strong></span>
+            {showLeaderboard ? (
+              <div className="w-full space-y-4">
+                <Leaderboard mode={gameMode} onClose={() => setShowLeaderboard(false)} />
+                <button
+                  onClick={() => setShowLeaderboard(false)}
+                  className="px-6 py-2 bg-white/10 hover:bg-white/15 active:scale-95 text-white text-xs font-bold rounded-xl transition-all cursor-pointer"
+                >
+                  Буцах
+                </button>
               </div>
-              <div className="flex items-center gap-2">
-                <Timer size={16} className="text-yellow-400 shrink-0" />
-                <span>Асуулт бүрт <strong className="text-white">30 секунд</strong> байна, хугацаа дуусвал бурууд тооцно</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Heart size={16} className="text-yellow-400 shrink-0" />
-                <span>Тоглогч <strong className="text-white">3 амьтай</strong>, 3 буруу хариулбал тоглоом дуусна</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Trophy size={16} className="text-yellow-400 shrink-0" />
-                <span>Дараалан 3 удаа зөв хариулбал <strong className="text-yellow-400">Bonus +30 оноо</strong> авна</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Volume2 size={16} className="text-yellow-400 shrink-0" />
-                <span>Зөв бол <strong>Ding</strong>, буруу бол <strong>Buzz</strong> дууны эффектүүдтэй!</span>
-              </div>
-            </div>
+            ) : (
+              <>
+                {/* Game Mode Selection */}
+                <div className="w-full max-w-md space-y-3">
+                  <h3 className="text-[10px] uppercase text-gray-400 tracking-wider font-bold">ТОГЛООМЫН ГОРИМ СОНГОХ</h3>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button
+                      onClick={() => setGameMode("anime")}
+                      className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
+                        gameMode === "anime"
+                          ? "bg-yellow-500/10 border-yellow-400 shadow-md shadow-yellow-500/5"
+                          : "bg-white/5 border-white/10 hover:border-white/25"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <Sparkles size={16} className={gameMode === "anime" ? "text-yellow-400" : "text-gray-400"} />
+                        <span className="font-bold text-sm text-white font-sans">Аниме Таах</span>
+                      </div>
+                      <p className="text-[11px] text-gray-400 leading-relaxed font-light">
+                        Emoji-оор илэрхийлсэн аниме нэрийг таана.
+                      </p>
+                    </button>
 
-            <button
-              onClick={() => setGameState("playing")}
-              className="px-8 py-3 bg-yellow-500 hover:bg-yellow-600 active:scale-95 text-black font-bold rounded-full shadow-lg hover:shadow-yellow-500/20 transition-all cursor-pointer flex items-center gap-2"
-            >
-              <Play size={18} className="fill-black" />
-              <span>ТОГЛООМЫГ ЭХЛЭХ</span>
-            </button>
+                    <button
+                      onClick={() => setGameMode("character")}
+                      className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
+                        gameMode === "character"
+                          ? "bg-yellow-500/10 border-yellow-400 shadow-md shadow-yellow-500/5"
+                          : "bg-white/5 border-white/10 hover:border-white/25"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <Users size={16} className={gameMode === "character" ? "text-yellow-400" : "text-gray-400"} />
+                        <span className="font-bold text-sm text-white font-sans">Баатрын Дүр Таах</span>
+                      </div>
+                      <p className="text-[11px] text-gray-400 leading-relaxed font-light">
+                        Баатрын зургийг хараад нэрийг нь таана.
+                      </p>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="max-w-md bg-white/5 p-4 rounded-xl border border-white/5 text-left text-xs text-gray-300 space-y-2.5 w-full">
+                  <div className="flex items-center gap-2">
+                    <Sparkles size={14} className="text-yellow-400 shrink-0" />
+                    <span>Асуулт бүр 4 сонголттой, зөв хариулбал <strong className="text-white">+10 оноо</strong></span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Timer size={14} className="text-yellow-400 shrink-0" />
+                    <span>Асуулт бүрт <strong className="text-white">30 секунд</strong> байна</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Heart size={14} className="text-yellow-400 shrink-0" />
+                    <span>Тоглогч <strong className="text-white">3 амьтай</strong>, буруу хариулбал амь хасагдана</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Trophy size={14} className="text-yellow-400 shrink-0" />
+                    <span>Дараалан 3 зөв хариулбал <strong className="text-yellow-400">Bonus +30 оноо</strong></span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+                  <button
+                    onClick={() => startGame(gameMode)}
+                    className="flex-1 py-3 bg-yellow-500 hover:bg-yellow-600 active:scale-95 text-black font-bold rounded-xl shadow-lg hover:shadow-yellow-500/10 transition-all cursor-pointer flex items-center justify-center gap-2 text-sm"
+                  >
+                    <Play size={16} className="fill-black" />
+                    <span>ТОГЛООМЫГ ЭХЛЭХ</span>
+                  </button>
+
+                  <button
+                    onClick={() => setShowLeaderboard(true)}
+                    className="py-3 px-5 bg-white/10 hover:bg-white/15 active:scale-95 text-white font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 text-sm border border-white/5"
+                  >
+                    <Trophy size={16} className="text-yellow-400" />
+                    <span>Самбар харах</span>
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         )}
 
         {/* ACTIVE GAME STATES (PLAYING & ANSWERED) */}
         {(gameState === "playing" || gameState === "answered") && currentQuestion && (
-          <div className="flex-1 flex flex-col justify-between space-y-4">
+          <div className="flex-1 flex flex-col justify-start space-y-4">
             
             {/* HUD / Stats Bar */}
             <div className="flex items-center justify-between border-b border-white/5 pb-3">
@@ -403,12 +629,33 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
                 Асуулт: <strong className="text-white text-sm">{currentIndex + 1}</strong> / {questions.length}
               </div>
 
-              {/* Timer */}
-              <div className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
-                <Timer size={14} className={`${timeLeft <= 10 ? "text-red-500 animate-pulse" : "text-cyan-400"}`} />
-                <span className={`font-mono text-xs sm:text-sm font-bold ${timeLeft <= 10 ? "text-red-500" : "text-white"}`}>
-                  {timeLeft}s
-                </span>
+              {/* Timer & Hint */}
+              <div className="flex items-center gap-2">
+                {gameState === "playing" && (
+                  <button
+                    onClick={handleUseHint}
+                    disabled={hintUsedForCurrentQuestion || hintsLeft <= 0}
+                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-bold transition-all ${
+                      hintUsedForCurrentQuestion
+                        ? "bg-white/5 border-white/5 text-gray-500 cursor-not-allowed"
+                        : hintsLeft <= 0
+                        ? "bg-red-500/5 border-red-500/10 text-red-500/50 cursor-not-allowed"
+                        : "bg-yellow-500/10 border-yellow-500/20 text-yellow-400 hover:bg-yellow-500/15 cursor-pointer active:scale-95"
+                    }`}
+                    title={hintUsedForCurrentQuestion ? "Энэ асуултад тусламж авсан" : `Тусламж авах (${hintsLeft} үлдсэн)`}
+                  >
+                    <Sparkles size={11} className={hintUsedForCurrentQuestion ? "text-gray-500" : "text-yellow-400 animate-pulse"} />
+                    <span className="hidden sm:inline">Тусламж:</span>
+                    <span>💡 {hintsLeft}</span>
+                  </button>
+                )}
+
+                <div className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
+                  <Timer size={14} className={`${timeLeft <= 10 ? "text-red-500 animate-pulse" : "text-cyan-400"}`} />
+                  <span className={`font-mono text-xs sm:text-sm font-bold ${timeLeft <= 10 ? "text-red-500" : "text-white"}`}>
+                    {timeLeft}s
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -435,17 +682,59 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
                 animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
                 exit={{ opacity: 0, x: -25, filter: "blur(4px)" }}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
-                className="flex-1 flex flex-col justify-between space-y-4"
+                className="flex-1 flex flex-col justify-start space-y-4"
               >
 
-            {/* Emojis Display Section */}
-            <div className="text-center py-6 sm:py-8 bg-white/5 rounded-2xl border border-white/5 relative overflow-hidden flex flex-col items-center justify-center space-y-3">
-              <div className="absolute inset-0 bg-gradient-to-tr from-yellow-500/5 to-transparent pointer-events-none" />
-              <div className="text-4xl sm:text-6xl tracking-widest filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] select-none">
-                {currentQuestion.emojis}
+            {/* Clue Section */}
+            {gameMode === "anime" ? (
+              <div className={`text-center bg-white/5 rounded-2xl border border-white/5 relative overflow-hidden flex flex-col items-center justify-center space-y-1.5 transition-all ${
+                gameState === "answered" ? "py-3" : "py-6 sm:py-8"
+              }`}>
+                <div className="absolute inset-0 bg-gradient-to-tr from-yellow-500/5 to-transparent pointer-events-none" />
+                <div className={`tracking-widest filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] select-none transition-all ${
+                  gameState === "answered" ? "text-2xl sm:text-3xl" : "text-4xl sm:text-6xl"
+                }`}>
+                  {currentQuestion.emojis}
+                </div>
+                <p className="text-[10px] sm:text-xs text-gray-400 font-light">Эдгээр emoji-оор ямар аниме-г илэрхийлж байна вэ?</p>
               </div>
-              <p className="text-xs text-gray-400 font-light">Эдгээр emoji-оор ямар аниме-г илэрхийлж байна вэ?</p>
-            </div>
+            ) : (
+              <div className={`relative rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03] flex items-center justify-center p-2.5 transition-all ${
+                gameState === "answered" ? "h-28 sm:h-36" : "h-44 sm:h-52"
+              }`}>
+                <img
+                  src={currentQuestion.image}
+                  alt="Таах баатар"
+                  className="max-h-full max-w-full object-contain filter drop-shadow-md select-none transition-all duration-500 rounded-xl"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/40 to-transparent p-1.5 text-center">
+                  <div className={`tracking-widest filter drop-shadow-md select-none transition-all ${
+                    gameState === "answered" ? "text-lg" : "text-xl sm:text-2xl"
+                  }`}>
+                    {currentQuestion.emojis}
+                  </div>
+                  <p className="text-[9px] text-yellow-400 font-light">Энэ ямар аниме-гийн дүр вэ?</p>
+                </div>
+              </div>
+            )}
+
+            {/* Hint Box */}
+            {hintUsedForCurrentQuestion && gameState === "playing" && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-yellow-500/10 border border-yellow-500/25 rounded-2xl p-3 sm:p-3.5 text-xs text-yellow-300 flex items-start gap-2.5 animate-blur-fade-up"
+              >
+                <span className="text-base">💡</span>
+                <div className="space-y-0.5">
+                  <p className="font-bold text-yellow-400">Тусламж идэвхжлээ!</p>
+                  <p className="font-light opacity-90 leading-relaxed">
+                    Зөв хариултын эхний үсэг: <strong className="text-white">"{currentQuestion.answer[0]}"</strong>, урт: <strong className="text-white">{currentQuestion.answer.length}</strong> үсэг. Хувилбаруудаас 2 буруу хариултыг хаслаа.
+                  </p>
+                </div>
+              </motion.div>
+            )}
 
             {/* INPUT OPTIONS & TEXT FIELD (PLAYING STATE) */}
             {gameState === "playing" && (
@@ -456,10 +745,13 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
                    {currentChoices.map((opt) => {
                      const isThisSelected = selectedOption === opt;
                      const isThisCorrectAnswer = opt === currentQuestion.answer;
+                     const isEliminated = eliminatedChoices.includes(opt);
                      
                      let buttonClass = "bg-white/5 border-white/10 text-white/90 hover:bg-cyan-500/10 hover:border-cyan-400 hover:scale-[1.03] hover:shadow-cyan-500/15 cursor-pointer active:scale-95";
                      
-                     if (selectedOption !== null) {
+                     if (isEliminated) {
+                       buttonClass = "opacity-20 line-through scale-95 border-white/5 pointer-events-none text-gray-500 bg-black/10";
+                     } else if (selectedOption !== null) {
                        if (isThisSelected) {
                          if (isCorrect) {
                            buttonClass = "bg-green-600 border-green-400 text-white scale-[1.03] shadow-lg shadow-green-500/20 pointer-events-none";
@@ -478,7 +770,7 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
                        <button
                          key={opt}
                          onClick={() => handleOptionSelect(opt)}
-                         disabled={selectedOption !== null}
+                         disabled={selectedOption !== null || isEliminated}
                          className={`text-sm py-3.5 px-4 rounded-xl font-medium border text-left transition-all duration-300 shadow-md ${buttonClass}`}
                        >
                          {opt}
@@ -545,18 +837,40 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
                   </div>
 
                   {/* YouTube Trailer Video Iframe */}
-                  <div className="rounded-xl overflow-hidden h-40 border border-white/10">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      src={`${currentQuestion.video}?autoplay=1&mute=1`}
-                      title={`${currentQuestion.answer} Trailer`}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full"
-                    ></iframe>
-                  </div>
+                  {currentQuestion.video ? (
+                    <div className="space-y-1.5">
+                      <div className="rounded-xl overflow-hidden h-40 border border-white/10">
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          src={`${getYouTubeEmbedUrl(currentQuestion.video)}?autoplay=1&mute=1`}
+                          title={`${currentQuestion.answer} Trailer`}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="w-full h-full"
+                        ></iframe>
+                      </div>
+                      <div className="flex justify-end">
+                        <a
+                          href={currentQuestion.video}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[10px] text-yellow-400 hover:text-yellow-300 hover:underline flex items-center gap-1 transition-colors bg-white/5 px-2 py-1 rounded border border-white/5 hover:border-white/10"
+                        >
+                          <svg className="w-3 h-3 fill-current text-red-500" viewBox="0 0 24 24">
+                            <path d="M23.498 6.163c-.272-1.011-1.066-1.805-2.077-2.077C19.588 3.541 12 3.541 12 3.541s-7.588 0-9.421.545c-1.011.272-1.805 1.066-2.077 2.077C0 8.005 0 12 0 12s0 3.995.502 5.837c.272 1.011 1.066 1.805 2.077 2.077 1.833.545 9.421.545 9.421.545s7.588 0 9.421-.545c1.011-.272 1.805-1.066 2.077-2.077.502-1.842.502-5.837.502-5.837s0-3.995-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                          </svg>
+                          <span>YouTube дээр үзэх (Ажиллахгүй бол)</span>
+                        </a>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="rounded-xl border border-white/5 bg-white/[0.02] flex flex-col items-center justify-center p-4 h-40 text-center">
+                      <span className="text-[10px] text-gray-500 uppercase tracking-widest block mb-1">Видео байхгүй</span>
+                      <p className="text-xs text-gray-400 font-light">Энэ асуултад видео байхгүй байна.</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Next button */}
@@ -579,33 +893,35 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
 
         {/* GAME OVER STATE */}
         {gameState === "gameover" && (
-          <div className="flex-1 flex flex-col items-center justify-center text-center py-8 space-y-6">
-            <div className="w-20 h-20 bg-red-500/10 rounded-2xl flex items-center justify-center border border-red-500/20 shadow-lg shadow-red-500/5">
-              <Heart size={40} className="text-red-500" />
+          <div className="flex-1 flex flex-col items-center justify-start text-center py-4 space-y-4 max-h-full overflow-y-auto no-scrollbar">
+            <div className="w-16 h-16 bg-red-500/10 rounded-2xl flex items-center justify-center border border-red-500/20 shadow-lg shadow-red-500/5">
+              <Heart size={32} className="text-red-500" />
             </div>
 
-            <div className="space-y-2">
-              <h2 className="text-3xl font-extrabold text-red-500 uppercase">ТОГЛООМ ДУУСЛАА!</h2>
-              <p className="text-gray-300 text-sm">Таны 3 амь дууссан тул тоглоом дууслаа.</p>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-extrabold text-red-500 uppercase">ТОГЛООМ ДУУСЛАА!</h2>
+              <p className="text-gray-300 text-xs">Таны 3 амь дууссан тул тоглоом дууслаа.</p>
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-5 w-full max-w-xs flex flex-col items-center space-y-2">
-              <span className="text-xs uppercase text-gray-400 tracking-wider">Нийт оноо</span>
-              <span className="text-4xl font-black font-mono text-yellow-400">{score} pt</span>
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 w-full max-w-xs flex flex-col items-center">
+              <span className="text-[10px] uppercase text-gray-400 tracking-wider">Нийт оноо</span>
+              <span className="text-3xl font-black font-mono text-yellow-400">{score} pt</span>
               <span className="text-[10px] text-gray-500 font-mono">Дараалсан зөв хариулт: {consecutive}</span>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
+            {renderScoreSubmission()}
+
+            <div className="flex flex-col sm:flex-row gap-2.5 w-full max-w-sm pt-2">
               <button
                 onClick={restartGame}
-                className="flex-1 py-3 bg-white text-black hover:bg-gray-200 active:scale-95 rounded-xl font-bold transition-all cursor-pointer flex items-center justify-center gap-2 text-sm"
+                className="flex-1 py-3 bg-white text-black hover:bg-gray-200 active:scale-95 rounded-xl font-bold transition-all cursor-pointer flex items-center justify-center gap-2 text-xs"
               >
-                <RotateCcw size={16} />
+                <RotateCcw size={14} />
                 <span>ДАХИН ТОГЛОХ</span>
               </button>
               <button
                 onClick={onClose}
-                className="flex-1 py-3 bg-white/10 hover:bg-white/15 active:scale-95 rounded-xl font-bold transition-all cursor-pointer text-sm text-white"
+                className="flex-1 py-3 bg-white/10 hover:bg-white/15 active:scale-95 rounded-xl font-bold transition-all cursor-pointer text-xs text-white"
               >
                 ХААХ
               </button>
@@ -615,33 +931,35 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
 
         {/* WIN STATE */}
         {gameState === "win" && (
-          <div className="flex-1 flex flex-col items-center justify-center text-center py-8 space-y-6">
-            <div className="w-20 h-20 bg-yellow-400/10 rounded-2xl flex items-center justify-center border border-yellow-400/20 shadow-lg shadow-yellow-500/5">
-              <Trophy size={40} className="text-yellow-400 animate-bounce" />
+          <div className="flex-1 flex flex-col items-center justify-start text-center py-4 space-y-4 max-h-full overflow-y-auto no-scrollbar">
+            <div className="w-16 h-16 bg-yellow-400/10 rounded-2xl flex items-center justify-center border border-yellow-400/20 shadow-lg shadow-yellow-500/5">
+              <Trophy size={32} className="text-yellow-400 animate-bounce" />
             </div>
 
-            <div className="space-y-2">
-              <h2 className="text-3xl font-black text-yellow-400 uppercase tracking-wide">ТА ЯЛЛАА! 🎉</h2>
-              <p className="text-gray-300 text-sm">Бүх 15 аниме emoji тааврыг амжилттай таалаа.</p>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-black text-yellow-400 uppercase tracking-wide">ТА ЯЛЛАА! 🎉</h2>
+              <p className="text-gray-300 text-xs">Амжилттай тааж дууслаа.</p>
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-5 w-full max-w-xs flex flex-col items-center space-y-2">
-              <span className="text-xs uppercase text-gray-400 tracking-wider">Эцсийн оноо</span>
-              <span className="text-4xl font-black font-mono text-yellow-400">{score} pt</span>
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 w-full max-w-xs flex flex-col items-center">
+              <span className="text-[10px] uppercase text-gray-400 tracking-wider">Эцсийн оноо</span>
+              <span className="text-3xl font-black font-mono text-yellow-400">{score} pt</span>
               <span className="text-[10px] text-green-400 font-mono">Шилдэг тоглогч амжилттай!</span>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
+            {renderScoreSubmission()}
+
+            <div className="flex flex-col sm:flex-row gap-2.5 w-full max-w-sm pt-2">
               <button
                 onClick={restartGame}
-                className="flex-1 py-3 bg-yellow-500 hover:bg-yellow-600 active:scale-95 text-black rounded-xl font-bold transition-all cursor-pointer flex items-center justify-center gap-2 text-sm"
+                className="flex-1 py-3 bg-yellow-500 hover:bg-yellow-600 active:scale-95 text-black rounded-xl font-bold transition-all cursor-pointer flex items-center justify-center gap-2 text-xs"
               >
-                <RotateCcw size={16} />
+                <RotateCcw size={14} />
                 <span>ЭХНЭЭС ЭХЛЭХ</span>
               </button>
               <button
                 onClick={onClose}
-                className="flex-1 py-3 bg-white/10 hover:bg-white/15 active:scale-95 rounded-xl font-bold transition-all cursor-pointer text-sm text-white"
+                className="flex-1 py-3 bg-white/10 hover:bg-white/15 active:scale-95 rounded-xl font-bold transition-all cursor-pointer text-xs text-white"
               >
                 ХААХ
               </button>
