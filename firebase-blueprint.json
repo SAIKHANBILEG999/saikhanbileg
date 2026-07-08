@@ -1,0 +1,103 @@
+{
+  "entities": {
+    "Score": {
+      "title": "Leaderboard Score",
+      "description": "Leaderboard scores for Anime Guesser",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Player name"
+        },
+        "score": {
+          "type": "number",
+          "description": "Total score achieved"
+        },
+        "mode": {
+          "type": "string",
+          "description": "Game mode played (anime or character)"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Time of creation"
+        }
+      },
+      "required": ["name", "score", "mode"]
+    },
+    "TyperacerRoom": {
+      "title": "Typeracer Room",
+      "description": "A real-time multiplayer Typeracer room",
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The typing practice text for the room"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["waiting", "countdown", "playing", "finished"],
+          "description": "Current status of the game in this room"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Room creation time"
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the race starts"
+        },
+        "players": {
+          "type": "object",
+          "description": "Map of player uid to player status"
+        }
+      },
+      "required": ["text", "status", "players"]
+    },
+    "Review": {
+      "title": "User Review",
+      "description": "A user movie/hobby review or feedback",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "User name"
+        },
+        "rating": {
+          "type": "number",
+          "description": "Rating score from 1 to 5"
+        },
+        "movieTitle": {
+          "type": "string",
+          "description": "Subject title or category"
+        },
+        "reviewText": {
+          "type": "string",
+          "description": "Detailed review content"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Submission time"
+        }
+      },
+      "required": ["name", "rating", "movieTitle", "reviewText"]
+    }
+  },
+  "firestore": {
+    "/scores/{scoreId}": {
+      "schema": "Score",
+      "description": "Leaderboard records"
+    },
+    "/typeracer_rooms/{roomId}": {
+      "schema": "TyperacerRoom",
+      "description": "Multiplayer Typeracer rooms"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "User reviews and feedback"
+    }
+  }
+}

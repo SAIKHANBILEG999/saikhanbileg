@@ -9,14 +9,6 @@ export interface MovieSlide {
 
 export const MOVIE_SLIDES: MovieSlide[] = [
   {
-    id: "harry-potter",
-    rating: "9.8/10 Favorite",
-    releaseDate: "June, 2026",
-    title: "Harry Potter: The Magic Within",
-    description: "Сайханбилэгийн хамгийн дуртай кино! Шидтэний гайхамшигт ертөнц, нөхөрлөл, адал явдал болон харанхуйн хүчний эсрэг тэмцэл.",
-    videoUrl: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260406_094145_4a271a6c-3869-4f1c-8aa7-aeb0cb227994.mp4"
-  },
-  {
     id: "volleyball-passion",
     rating: "9.5/10 Hobby",
     releaseDate: "June, 2026",
@@ -43,9 +35,6 @@ export const MOVIE_SLIDES: MovieSlide[] = [
 ];
 
 export const NAV_LINKS = [
-  { label: "Movies", href: "#movies" },
-  { label: "TV Series", href: "#tv-series" },
   { label: "Editor's Pick", href: "#editors-pick" },
-  { label: "Interviews", href: "#interviews" },
   { label: "User Reviews", href: "#user-reviews" }
 ];

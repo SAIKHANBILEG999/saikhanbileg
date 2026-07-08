@@ -233,7 +233,7 @@ export default function IdolCoachModal({ isOpen, onClose }: IdolCoachModalProps)
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 flex flex-col min-h-0">
+        <div className="flex-1 flex flex-col min-h-0 min-w-0">
           {/* Active Coach Header */}
           <div className="flex items-center gap-2.5 pb-2 border-b border-white/5">
             <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center border shrink-0 ${currentCoach.color}`}>
@@ -258,7 +258,7 @@ export default function IdolCoachModal({ isOpen, onClose }: IdolCoachModalProps)
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} animate-fade-in`}
               >
                 <div
-                  className={`max-w-[85%] rounded-2xl p-2.5 md:p-3.5 text-xs md:text-sm leading-relaxed ${
+                  className={`max-w-[85%] break-words rounded-2xl p-2.5 md:p-3.5 text-xs md:text-sm leading-relaxed ${
                     msg.role === "user"
                       ? "bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30 text-white rounded-tr-none"
                       : "bg-white/5 border border-white/10 text-gray-100 rounded-tl-none"
@@ -288,7 +288,7 @@ export default function IdolCoachModal({ isOpen, onClose }: IdolCoachModalProps)
           </div>
 
           {/* Quick Suggestions */}
-          <div className="pb-2 md:pb-3 overflow-x-auto flex gap-1.5 no-scrollbar">
+          <div className="pb-2 md:pb-3 overflow-x-auto flex gap-1.5 no-scrollbar w-full max-w-full">
             {(SUGGESTIONS[selectedCoach] || []).map((suggest, idx) => (
               <button
                 key={idx}
@@ -307,7 +307,7 @@ export default function IdolCoachModal({ isOpen, onClose }: IdolCoachModalProps)
               e.preventDefault();
               handleSend(input);
             }}
-            className="flex gap-2 border-t border-white/5 pt-2.5 md:pt-3"
+            className="flex gap-2 border-t border-white/5 pt-2.5 md:pt-3 w-full max-w-full"
           >
             <input
               type="text"

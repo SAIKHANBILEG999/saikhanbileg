@@ -10,6 +10,8 @@ interface NavbarProps {
   onProfileClick: () => void;
   onIdolClick: () => void;
   onAnimeClick: () => void;
+  onTyperacerClick: () => void;
+  onNavLinkClick?: (label: string) => void;
 }
 
 export default function Navbar({
@@ -19,6 +21,8 @@ export default function Navbar({
   onProfileClick,
   onIdolClick,
   onAnimeClick,
+  onTyperacerClick,
+  onNavLinkClick,
 }: NavbarProps) {
   return (
     <nav className="relative z-50 flex items-center justify-between px-4 sm:px-6 md:px-12 py-4 md:py-6">
@@ -29,22 +33,21 @@ export default function Navbar({
         className="flex items-center gap-2 font-black tracking-widest text-white hover:opacity-80 transition-opacity text-xl md:text-2xl animate-blur-fade-up"
         style={{ animationDelay: "0ms" }}
       >
-        <span className="bg-white text-black px-2 py-0.5 rounded mr-1 font-mono font-bold text-sm md:text-base">C</span>
-        CINEMATIC
+        <span className="bg-white text-black px-2 py-0.5 rounded font-mono font-bold text-sm md:text-base">C</span>
       </a>
 
       {/* Desktop Links (Center) */}
       <div id="nav-desktop-links" className="hidden lg:flex items-center gap-8">
         {NAV_LINKS.map((link, idx) => (
-          <a
+          <button
             key={link.label}
             id={`nav-link-${idx}`}
-            href={link.href}
-            className="text-sm font-medium text-gray-300 hover:text-white transition-colors animate-blur-fade-up"
+            onClick={() => onNavLinkClick?.(link.label)}
+            className="text-sm font-medium text-gray-300 hover:text-white transition-colors animate-blur-fade-up bg-transparent border-none cursor-pointer"
             style={{ animationDelay: `${100 + idx * 50}ms` }}
           >
             {link.label}
-          </a>
+          </button>
         ))}
         {/* "🤖 My Idol" Link */}
         <button
@@ -64,6 +67,16 @@ export default function Navbar({
           style={{ animationDelay: `${100 + (NAV_LINKS.length + 1) * 50}ms` }}
         >
           <span>🎮 Anime Guesser</span>
+        </button>
+
+        {/* "⌨️ Typeracer" Link */}
+        <button
+          id="nav-link-typeracer"
+          onClick={onTyperacerClick}
+          className="text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors animate-blur-fade-up flex items-center gap-1.5 cursor-pointer bg-transparent border-none"
+          style={{ animationDelay: `${100 + (NAV_LINKS.length + 2) * 50}ms` }}
+        >
+          <span>⌨️ Typeracer</span>
         </button>
       </div>
 

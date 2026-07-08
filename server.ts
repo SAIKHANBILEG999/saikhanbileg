@@ -188,7 +188,71 @@ async function startServer() {
     }
   });
 
-  // 3. Vite Middleware integration
+  // 3. Google Search Results Simulation Endpoint
+  app.post("/api/search", async (req, res) => {
+    try {
+      const { query } = req.body;
+      if (!query) {
+        return res.status(400).json({ error: "Query is required" });
+      }
+
+      const searchInstruction = `You are a Google Search Results Simulator.
+Your goal is to simulate a highly realistic Google Search results page for ANY given query.
+The user is querying you, and you must output a structured JSON response.
+
+SPECIAL FOCUS:
+The system MUST recognize K-pop (К-поп, Солонгосын дуу хөгжим, хамтлагууд, дуучид, айдолууд, жишээ нь: IVE, BLACKPINK, BTS, NewJeans, Stray Kids, Babymonster, Le Sserafim, Aespa, Wonyoung, Jennie, Lisa гэх мэт) холбоотой хайлтуудыг маш сайн таньж, бодит бөгөөд маш сонирхолтой мэдээллүүдийг Монгол хэлээр харуулна. К-поп хамтлаг эсвэл дуучны тухай хайвал Knowledge Panel үүсгэж, гишүүд, дебют, харьяалагддаг агентлаг, хит дуунуудыг нь маш тодорхой харуулна уу.
+
+The response must contain exactly:
+1. "results": An array of at least 4-7 realistic search result objects. Each result object MUST have:
+   - "id": A unique string ID (like "res-1", "res-2").
+   - "title": A realistic web page title (e.g. "Wikipedia: Python (programming language)" эсвэл К-поп хамтлагийн тохирол "BLACKPINK хамтлагийн гишүүд ба түүх").
+   - "url": A realistic, professional-looking URL (e.g. "https://mn.wikipedia.org/wiki/Python" эсвэл "https://kpop.fandom.com/wiki/IVE").
+   - "snippet": A realistic, helpful, standard Google search description snippet explaining or summarizing the query's answer in Mongolian.
+   - "category": A 1-2 word category in Mongolian (e.g., "К-поп", "Хөгжим", "Кино", "Мэдээ", "Технологи", "Тоглоом", "Спорт", "Вэбсайт", "Дуу хуур").
+   - "rating": (Optional) string like "4.5/5" if applicable.
+   - "image": (Optional) a high-quality Unsplash image URL that represents the topic (e.g. a valid stock image from unsplash, keep it clean and relevant).
+   - "action": Use "external" for normal web pages.
+     HOWEVER, if the query is related to one of Saikhanbileg's portfolio items, map the action to one of the following exact strings if and only if it matches:
+     * "external" (for legacy movies)
+     * "play-volleyball" (for volleyball, спорт, волейбол)
+     * "play-roblox" (for roblox, роблокс)
+     * "play-standoff" (for standoff 2, стандофф)
+     * "launch-anime" (for anime guesser, аниме тоглоом)
+     * "launch-typeracer" (for typeracer, typing game, бичих тоглоом)
+     * "launch-idol" (for idol coach, wonyoung, зөвлөхүүд, coaches, idol, k-pop coach, К-поп зөвлөх, айдол дасгалжуулагч)
+     * "open-profile" (for Сайханбилэг, Saikhanbileg, profile, портфолио)
+   - "extra": (Optional) An object of key-values containing short extra specifications (e.g., {"Төрөл": "Програмчлал", "Анх гарсан": "1991"}).
+
+2. "knowledgePanel": An optional or required object (highly recommended for prominent entities like celebrities, movies, concepts, companies, historical figures, K-pop groups/idols, or Saikhanbileg himself):
+   - "title": The name of the entity (e.g., "NewJeans", "Jang Wonyoung").
+   - "subtitle": A short subtitle in Mongolian (e.g., "Өмнөд Солонгосын охидын хамтлаг", "К-поп дуучин, модель").
+   - "description": A paragraph describing the entity in Mongolian with interesting, real facts.
+   - "image": A high-quality Unsplash image URL related to the entity (e.g., for BTS use a concert or cool music background, for Wonyoung use a charming female stage look or cute fashion photo from Unsplash).
+   - "extra": An object of key-value pairs (e.g. {"Агентлаг": "Starship Entertainment", "Дебют": "2021 он", "Гишүүд": "Вонён, Южин, Рэй, Лиж, Лэсо, Гаул", "Хит дуунууд": "LOVE DIVE, After LIKE, Baddie"}).
+   - "action": (Optional) Same as above ("open-profile", "launch-idol", etc. or "external").
+
+IMPORTANT: Write all search results, snippets, and knowledge panel fields in MONGOLIAN, but keep URLs and tech terms natural. Make the results look highly professional and informative. Avoid any mock filler text like "Lorem Ipsum". Return REAL, interesting facts. Must return valid JSON format.`;
+
+      const response = await ai.models.generateContent({
+        model: "gemini-3.5-flash",
+        contents: `Query to simulate search results for: "${query}"`,
+        config: {
+          responseMimeType: "application/json",
+          systemInstruction: searchInstruction,
+        }
+      });
+
+      const jsonStr = response.text.trim();
+      const searchData = JSON.parse(jsonStr);
+      res.json(searchData);
+    } catch (error: any) {
+      console.error("Error in Search Simulator API:", error);
+      res.status(500).json({ error: error.message || "Something went wrong" });
+    }
+  });
+
+  // 4. Vite Middleware integration
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },

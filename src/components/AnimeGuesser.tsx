@@ -19,7 +19,7 @@ interface AnimeGuesserProps {
   onClose: () => void;
 }
 
-// Helper to convert standard YouTube watch links to embed links
+// Helper to convert standard YouTube watch links to embed links using privacy-friendly youtube-nocookie.com
 function getYouTubeEmbedUrl(url: string): string {
   if (!url) return "";
   try {
@@ -38,7 +38,9 @@ function getYouTubeEmbedUrl(url: string): string {
     }
     
     if (videoId) {
-      return `https://www.youtube.com/embed/${videoId}`;
+      // Use youtube-nocookie.com to bypass tracking block and allow flawless playback inside parent iframes
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      return `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&enablejsapi=1&rel=0&controls=1&origin=${encodeURIComponent(origin)}`;
     }
   } catch (e) {
     console.error("Error parsing YouTube URL:", e);
@@ -190,7 +192,7 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
             answers: ["one piece", "onepiece", "ван пийс", "ванпийс"],
             options: ["One Piece", "Naruto", "Bleach", "Dragon Ball"],
             image: "https://dw9to29mmj727.cloudfront.net/promo/2016/5265-SeriesHeaders_OP_2000x800_wm.jpg",
-            video: "",
+            video: "https://www.youtube.com/watch?v=l_98K4_RRL0",
             type: "anime"
           },
           {
@@ -200,7 +202,7 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
             answers: ["naruto", "наруто"],
             options: ["Naruto", "Dragon Ball", "One Piece", "My Hero Academia"],
             image: "https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg",
-            video: "",
+            video: "https://www.youtube.com/watch?v=2mWgA_vS96I",
             type: "anime"
           }
         ];
@@ -497,14 +499,14 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
 
         {/* INTRO / START SCREEN */}
         {gameState === "intro" && (
-          <div className="flex-1 flex flex-col items-center justify-start text-center px-2 py-4 space-y-5">
-            <div className="w-16 h-16 bg-yellow-400/10 rounded-2xl flex items-center justify-center border border-yellow-400/20 shadow-lg shadow-yellow-500/5">
-              <Gamepad2 size={36} className="text-yellow-400" />
+          <div className="flex-1 flex flex-col items-center justify-start text-center px-1 sm:px-2 py-2 sm:py-4 space-y-4 sm:space-y-5">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-yellow-400/10 rounded-xl sm:rounded-2xl flex items-center justify-center border border-yellow-400/20 shadow-lg shadow-yellow-500/5">
+              <Gamepad2 className="w-7 h-7 sm:w-9 sm:h-9 text-yellow-400" />
             </div>
             
-            <div className="space-y-1">
-              <h2 className="text-xl sm:text-2xl font-black tracking-wider text-white">ANIME GUESSER CHALLENGE</h2>
-              <p className="text-yellow-400 text-[10px] tracking-widest uppercase font-mono">Сайханбилэгийн тусгай тоглоом</p>
+            <div className="space-y-0.5 sm:space-y-1">
+              <h2 className="text-lg sm:text-2xl font-black tracking-wider text-white">ANIME GUESSER CHALLENGE</h2>
+              <p className="text-yellow-400 text-[9px] sm:text-[10px] tracking-widest uppercase font-mono">Сайханбилэгийн тусгай тоглоом</p>
             </div>
 
             {showLeaderboard ? (
@@ -520,80 +522,80 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
             ) : (
               <>
                 {/* Game Mode Selection */}
-                <div className="w-full max-w-md space-y-3">
-                  <h3 className="text-[10px] uppercase text-gray-400 tracking-wider font-bold">ТОГЛООМЫН ГОРИМ СОНГОХ</h3>
+                <div className="w-full max-w-md space-y-2">
+                  <h3 className="text-[9px] uppercase text-gray-400 tracking-wider font-bold">ТОГЛООМЫН ГОРИМ СОНГОХ</h3>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                     <button
                       onClick={() => setGameMode("anime")}
-                      className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
+                      className={`p-3 sm:p-4 rounded-xl border text-left transition-all cursor-pointer ${
                         gameMode === "anime"
                           ? "bg-yellow-500/10 border-yellow-400 shadow-md shadow-yellow-500/5"
                           : "bg-white/5 border-white/10 hover:border-white/25"
                       }`}
                     >
                       <div className="flex items-center gap-2 mb-1">
-                        <Sparkles size={16} className={gameMode === "anime" ? "text-yellow-400" : "text-gray-400"} />
-                        <span className="font-bold text-sm text-white font-sans">Аниме Таах</span>
+                        <Sparkles size={15} className={gameMode === "anime" ? "text-yellow-400" : "text-gray-400"} />
+                        <span className="font-bold text-xs sm:text-sm text-white font-sans">Аниме Таах</span>
                       </div>
-                      <p className="text-[11px] text-gray-400 leading-relaxed font-light">
+                      <p className="text-[10px] sm:text-[11px] text-gray-400 leading-relaxed font-light">
                         Emoji-оор илэрхийлсэн аниме нэрийг таана.
                       </p>
                     </button>
 
                     <button
                       onClick={() => setGameMode("character")}
-                      className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
+                      className={`p-3 sm:p-4 rounded-xl border text-left transition-all cursor-pointer ${
                         gameMode === "character"
                           ? "bg-yellow-500/10 border-yellow-400 shadow-md shadow-yellow-500/5"
                           : "bg-white/5 border-white/10 hover:border-white/25"
                       }`}
                     >
                       <div className="flex items-center gap-2 mb-1">
-                        <Users size={16} className={gameMode === "character" ? "text-yellow-400" : "text-gray-400"} />
-                        <span className="font-bold text-sm text-white font-sans">Баатрын Дүр Таах</span>
+                        <Users size={15} className={gameMode === "character" ? "text-yellow-400" : "text-gray-400"} />
+                        <span className="font-bold text-xs sm:text-sm text-white font-sans">Баатрын Дүр Таах</span>
                       </div>
-                      <p className="text-[11px] text-gray-400 leading-relaxed font-light">
+                      <p className="text-[10px] sm:text-[11px] text-gray-400 leading-relaxed font-light">
                         Баатрын зургийг хараад нэрийг нь таана.
                       </p>
                     </button>
                   </div>
                 </div>
 
-                <div className="max-w-md bg-white/5 p-4 rounded-xl border border-white/5 text-left text-xs text-gray-300 space-y-2.5 w-full">
+                <div className="max-w-md bg-white/5 p-3 sm:p-4 rounded-xl border border-white/5 text-left text-[11px] sm:text-xs text-gray-300 space-y-2 w-full">
                   <div className="flex items-center gap-2">
-                    <Sparkles size={14} className="text-yellow-400 shrink-0" />
+                    <Sparkles size={13} className="text-yellow-400 shrink-0" />
                     <span>Асуулт бүр 4 сонголттой, зөв хариулбал <strong className="text-white">+10 оноо</strong></span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Timer size={14} className="text-yellow-400 shrink-0" />
+                    <Timer size={13} className="text-yellow-400 shrink-0" />
                     <span>Асуулт бүрт <strong className="text-white">30 секунд</strong> байна</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Heart size={14} className="text-yellow-400 shrink-0" />
+                    <Heart size={13} className="text-yellow-400 shrink-0" />
                     <span>Тоглогч <strong className="text-white">3 амьтай</strong>, буруу хариулбал амь хасагдана</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Trophy size={14} className="text-yellow-400 shrink-0" />
+                    <Trophy size={13} className="text-yellow-400 shrink-0" />
                     <span>Дараалан 3 зөв хариулбал <strong className="text-yellow-400">Bonus +30 оноо</strong></span>
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+                <div className="grid grid-cols-2 gap-3 w-full max-w-md">
                   <button
                     onClick={() => startGame(gameMode)}
-                    className="flex-1 py-3 bg-yellow-500 hover:bg-yellow-600 active:scale-95 text-black font-bold rounded-xl shadow-lg hover:shadow-yellow-500/10 transition-all cursor-pointer flex items-center justify-center gap-2 text-sm"
+                    className="py-2.5 sm:py-3 bg-yellow-500 hover:bg-yellow-600 active:scale-95 text-black font-bold rounded-xl shadow-lg hover:shadow-yellow-500/10 transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-sm"
                   >
-                    <Play size={16} className="fill-black" />
-                    <span>ТОГЛООМЫГ ЭХЛЭХ</span>
+                    <Play size={14} className="fill-black sm:w-4 sm:h-4" />
+                    <span>ТОГЛОХ</span>
                   </button>
 
                   <button
                     onClick={() => setShowLeaderboard(true)}
-                    className="py-3 px-5 bg-white/10 hover:bg-white/15 active:scale-95 text-white font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 text-sm border border-white/5"
+                    className="py-2.5 sm:py-3 px-3 sm:px-5 bg-white/10 hover:bg-white/15 active:scale-95 text-white font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-sm border border-white/5"
                   >
-                    <Trophy size={16} className="text-yellow-400" />
-                    <span>Самбар харах</span>
+                    <Trophy size={14} className="text-yellow-400 sm:w-4 sm:h-4" />
+                    <span>САМБАР</span>
                   </button>
                 </div>
               </>
@@ -838,17 +840,20 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
 
                   {/* YouTube Trailer Video Iframe */}
                   {currentQuestion.video ? (
-                    <div className="space-y-1.5">
-                      <div className="rounded-xl overflow-hidden h-40 border border-white/10">
+                    <div className="space-y-1.5 flex flex-col justify-between">
+                      <div className="rounded-xl overflow-hidden h-40 border border-white/10 relative bg-black/40 shadow-inner group">
+                        {/* Beautiful background glow effect */}
+                        <div className="absolute inset-0 bg-cyan-500/5 mix-blend-color pointer-events-none group-hover:opacity-0 transition-opacity" />
                         <iframe
                           width="100%"
                           height="100%"
-                          src={`${getYouTubeEmbedUrl(currentQuestion.video)}?autoplay=1&mute=1`}
+                          src={getYouTubeEmbedUrl(currentQuestion.video)}
                           title={`${currentQuestion.answer} Trailer`}
                           frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                           allowFullScreen
-                          className="w-full h-full"
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full relative z-10"
                         ></iframe>
                       </div>
                       <div className="flex justify-end">
@@ -856,12 +861,12 @@ export default function AnimeGuesser({ onClose }: AnimeGuesserProps) {
                           href={currentQuestion.video}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-[10px] text-yellow-400 hover:text-yellow-300 hover:underline flex items-center gap-1 transition-colors bg-white/5 px-2 py-1 rounded border border-white/5 hover:border-white/10"
+                          className="text-[10px] text-yellow-400 hover:text-yellow-300 hover:underline flex items-center gap-1.5 transition-all bg-white/5 hover:bg-white/10 px-2.5 py-1.5 rounded-lg border border-white/5 hover:border-yellow-400/20 shadow-md"
                         >
-                          <svg className="w-3 h-3 fill-current text-red-500" viewBox="0 0 24 24">
+                          <svg className="w-3.5 h-3.5 fill-current text-red-500" viewBox="0 0 24 24">
                             <path d="M23.498 6.163c-.272-1.011-1.066-1.805-2.077-2.077C19.588 3.541 12 3.541 12 3.541s-7.588 0-9.421.545c-1.011.272-1.805 1.066-2.077 2.077C0 8.005 0 12 0 12s0 3.995.502 5.837c.272 1.011 1.066 1.805 2.077 2.077 1.833.545 9.421.545 9.421.545s7.588 0 9.421-.545c1.011-.272 1.805-1.066 2.077-2.077.502-1.842.502-5.837.502-5.837s0-3.995-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                           </svg>
-                          <span>YouTube дээр үзэх (Ажиллахгүй бол)</span>
+                          <span className="font-medium">YouTube дээр нээх (Тоглохгүй бол дарна уу) ↗</span>
                         </a>
                       </div>
                     </div>

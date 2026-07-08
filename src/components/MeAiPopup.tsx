@@ -221,17 +221,10 @@ export default function MeAiPopup() {
       {/* Circular Messenger Action Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative group w-14 h-14 rounded-full bg-gradient-to-tr from-yellow-500 to-amber-600 text-black flex items-center justify-center shadow-2xl hover:scale-105 hover:rotate-3 transition-all duration-300 cursor-pointer active:scale-95"
+        className="relative group w-14 h-14 rounded-full bg-gradient-to-tr from-yellow-500 to-amber-600 text-black flex items-center justify-center shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer active:scale-95"
         title="Сайханбилэгийн AI туслах"
         aria-label="Open chat assistant"
       >
-        {/* Unread dot indicator */}
-        {hasUnread && !isOpen && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center text-[9px] text-white font-bold animate-bounce border-2 border-black">
-            !
-          </span>
-        )}
-        
         {isOpen ? (
           <X size={22} className="text-black" />
         ) : (
@@ -243,7 +236,7 @@ export default function MeAiPopup() {
               referrerPolicy="no-referrer"
             />
             <div className="absolute inset-0 bg-yellow-400/20 mix-blend-color-dodge group-hover:bg-transparent transition-colors"></div>
-            <div className="absolute bottom-1 right-1 w-3 h-3 rounded-full bg-green-500 border-2 border-yellow-500 animate-pulse"></div>
+            <div className="absolute bottom-1 right-1 w-3 h-3 rounded-full bg-green-500 border-2 border-yellow-500 animate-pulse animate-duration-1000"></div>
           </div>
         )}
       </button>

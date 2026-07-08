@@ -9,6 +9,8 @@ interface MobileMenuProps {
   onProfileClick: () => void;
   onIdolClick: () => void;
   onAnimeClick: () => void;
+  onTyperacerClick: () => void;
+  onNavLinkClick?: (label: string) => void;
 }
 
 export default function MobileMenu({
@@ -17,6 +19,8 @@ export default function MobileMenu({
   onProfileClick,
   onIdolClick,
   onAnimeClick,
+  onTyperacerClick,
+  onNavLinkClick,
 }: MobileMenuProps) {
   return (
     <div
@@ -29,11 +33,11 @@ export default function MobileMenu({
     >
       <div className="flex flex-col gap-1 p-4">
         {NAV_LINKS.map((link, idx) => (
-          <a
+          <button
             key={link.label}
             id={`mobile-nav-link-${idx}`}
-            href={link.href}
-            className={`text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 py-3 px-4 rounded-xl transition-all duration-300 transform ${
+            onClick={() => onNavLinkClick?.(link.label)}
+            className={`text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 py-3 px-4 rounded-xl transition-all duration-300 text-left cursor-pointer transform ${
               isOpen
                 ? "translate-x-0 opacity-100"
                 : "translate-x-4 opacity-0"
@@ -43,7 +47,7 @@ export default function MobileMenu({
             }}
           >
             {link.label}
-          </a>
+          </button>
         ))}
         {/* "🤖 My Idol" Link */}
         <button
@@ -75,6 +79,22 @@ export default function MobileMenu({
           }}
         >
           <span>🎮 Anime Guesser</span>
+        </button>
+
+        {/* "⌨️ Typeracer" Link */}
+        <button
+          id="mobile-nav-link-typeracer"
+          onClick={onTyperacerClick}
+          className={`text-base font-medium text-purple-400 hover:text-purple-300 hover:bg-white/5 py-3 px-4 rounded-xl transition-all duration-300 text-left flex items-center gap-2 transform cursor-pointer bg-transparent border-none ${
+            isOpen
+              ? "translate-x-0 opacity-100"
+              : "translate-x-4 opacity-0"
+          }`}
+          style={{
+            transitionDelay: `${(NAV_LINKS.length + 2) * 50}ms`,
+          }}
+        >
+          <span>⌨️ Typeracer</span>
         </button>
       </div>
 
