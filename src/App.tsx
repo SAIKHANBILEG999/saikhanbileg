@@ -7,8 +7,11 @@ import IdolCoachModal from "./components/IdolCoachModal";
 import MeAiPopup from "./components/MeAiPopup";
 import AnimeGuesser from "./components/AnimeGuesser";
 import Typeracer from "./components/Typeracer";
+import BoatRacing from "./components/BoatRacing";
+import SwimmingRace from "./components/SwimmingRace";
+import Leaderboard from "./components/Leaderboard";
 import ContentSections from "./components/ContentSections";
-import { Search, User, X, Film, Sparkles, CheckCircle, Gamepad2, ArrowLeft, Play, Mic, Camera, Globe, TrendingUp, ExternalLink } from "lucide-react";
+import { Search, User, X, Film, Sparkles, CheckCircle, Gamepad2, ArrowLeft, Play, Mic, Camera, Globe, TrendingUp, ExternalLink, Trophy } from "lucide-react";
 
 const profileAvatar = "/src/assets/images/flower_avatar_1782704451351.jpg";
 
@@ -224,6 +227,9 @@ export default function App() {
   const [isIdolModalOpen, setIsIdolModalOpen] = useState(false);
   const [isAnimeGuesserOpen, setIsAnimeGuesserOpen] = useState(false);
   const [isTyperacerOpen, setIsTyperacerOpen] = useState(false);
+  const [isBoatRacingOpen, setIsBoatRacingOpen] = useState(false);
+  const [isSwimmingRaceOpen, setIsSwimmingRaceOpen] = useState(false);
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
@@ -357,19 +363,18 @@ export default function App() {
       if (idx !== -1) setActiveIndex(idx);
       triggerToast("Волейболын танилцуулга ачааллаа! 🏐");
     } else if (action === "play-roblox") {
-      const idx = MOVIE_SLIDES.findIndex(slide => slide.id === "roblox");
-      if (idx !== -1) setActiveIndex(idx);
-      triggerToast("Roblox танилцуулга ачааллаа! 🎮");
+      setIsBoatRacingOpen(true);
+      triggerToast("Завины уралдааныг шууд нээлээ! ⛵");
     } else if (action === "play-standoff") {
       const idx = MOVIE_SLIDES.findIndex(slide => slide.id === "standoff");
       if (idx !== -1) setActiveIndex(idx);
       triggerToast("Standoff 2 танилцуулга ачааллаа! 🔫");
     } else if (action === "launch-anime") {
       setIsAnimeGuesserOpen(true);
-      triggerToast("Anime Guesser тоглоом ачааллаа! 🎮");
+      triggerToast("Anime Guesser ачааллаа! 🎮");
     } else if (action === "launch-typeracer") {
       setIsTyperacerOpen(true);
-      triggerToast("Typeracer тоглоом ачааллаа! ⌨️");
+      triggerToast("Typeracer ачааллаа! ⌨️");
     } else if (action === "launch-idol") {
       setIsIdolModalOpen(true);
     } else if (action === "open-profile") {
@@ -436,12 +441,22 @@ export default function App() {
           onAnimeClick={() => {
             setIsAnimeGuesserOpen(true);
             setIsMenuOpen(false);
-            triggerToast("Anime Guesser тоглоом ачааллаа! 🎮");
           }}
           onTyperacerClick={() => {
             setIsTyperacerOpen(true);
             setIsMenuOpen(false);
-            triggerToast("Typeracer тоглоом ачааллаа! ⌨️");
+          }}
+          onBoatClick={() => {
+            setIsBoatRacingOpen(true);
+            setIsMenuOpen(false);
+          }}
+          onSwimmingClick={() => {
+            setIsSwimmingRaceOpen(true);
+            setIsMenuOpen(false);
+          }}
+          onLeaderboardClick={() => {
+            setIsLeaderboardOpen(true);
+            setIsMenuOpen(false);
           }}
           onNavLinkClick={(label) => {
             setIsMenuOpen(false);
@@ -477,12 +492,22 @@ export default function App() {
           onAnimeClick={() => {
             setIsAnimeGuesserOpen(true);
             setIsMenuOpen(false);
-            triggerToast("Anime Guesser тоглоом ачааллаа! 🎮");
           }}
           onTyperacerClick={() => {
             setIsTyperacerOpen(true);
             setIsMenuOpen(false);
-            triggerToast("Typeracer тоглоом ачааллаа! ⌨️");
+          }}
+          onBoatClick={() => {
+            setIsBoatRacingOpen(true);
+            setIsMenuOpen(false);
+          }}
+          onSwimmingClick={() => {
+            setIsSwimmingRaceOpen(true);
+            setIsMenuOpen(false);
+          }}
+          onLeaderboardClick={() => {
+            setIsLeaderboardOpen(true);
+            setIsMenuOpen(false);
           }}
           onNavLinkClick={(label) => {
             setIsMenuOpen(false);
@@ -1092,6 +1117,51 @@ export default function App() {
       {/* G. Typeracer Game Modal */}
       {isTyperacerOpen && (
         <Typeracer onClose={() => setIsTyperacerOpen(false)} />
+      )}
+
+      {/* H. Boat Racing Game Modal */}
+      {isBoatRacingOpen && (
+        <BoatRacing 
+          onClose={() => setIsBoatRacingOpen(false)} 
+          onCoinsEarned={(coins) => {
+            triggerToast(`Завины уралдаанд оролцож ${coins} C-Coins цуглууллаа! ⛵`);
+          }}
+        />
+      )}
+
+      {/* I. Swimming Race Game Modal */}
+      {isSwimmingRaceOpen && (
+        <SwimmingRace 
+          onClose={() => setIsSwimmingRaceOpen(false)} 
+          onCoinsEarned={(coins) => {
+            triggerToast(`Усан спортын тэмцээнд оролцож ${coins} C-Coins цуглууллаа! 🏊`);
+          }}
+        />
+      )}
+
+      {/* J. Leaderboard System Modal */}
+      {isLeaderboardOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="w-full max-w-xl p-6 rounded-3xl bg-zinc-950/95 border border-white/10 shadow-2xl relative text-white flex flex-col space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Trophy className="text-yellow-400" size={24} />
+                <h3 className="text-lg font-black uppercase tracking-wider text-yellow-400">
+                  Тэргүүлэгчдийн Самбар (Leaderboards)
+                </h3>
+              </div>
+              <button 
+                onClick={() => setIsLeaderboardOpen(false)}
+                className="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all cursor-pointer"
+              >
+                <X size={16} />
+              </button>
+            </div>
+            <div className="overflow-y-auto max-h-[70vh] no-scrollbar">
+              <Leaderboard mode="boat" allowModeSwitching={true} />
+            </div>
+          </div>
+        </div>
       )}
 
       {/* E. Messenger-style Me-AI Assistant Popup */}

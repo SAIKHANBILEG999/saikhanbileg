@@ -1,4 +1,4 @@
-import { Search, User, Menu, X } from "lucide-react";
+import { Search, User, Menu, X, Trophy } from "lucide-react";
 import { NAV_LINKS } from "../types";
 
 const profileAvatar = "/src/assets/images/flower_avatar_1782704451351.jpg";
@@ -11,6 +11,9 @@ interface NavbarProps {
   onIdolClick: () => void;
   onAnimeClick: () => void;
   onTyperacerClick: () => void;
+  onBoatClick: () => void;
+  onSwimmingClick: () => void;
+  onLeaderboardClick: () => void;
   onNavLinkClick?: (label: string) => void;
 }
 
@@ -22,6 +25,9 @@ export default function Navbar({
   onIdolClick,
   onAnimeClick,
   onTyperacerClick,
+  onBoatClick,
+  onSwimmingClick,
+  onLeaderboardClick,
   onNavLinkClick,
 }: NavbarProps) {
   return (
@@ -59,11 +65,31 @@ export default function Navbar({
           <span>🤖 My Idol</span>
         </button>
 
+        {/* "⛵ Boat Racing" Link */}
+        <button
+          id="nav-link-boat"
+          onClick={onBoatClick}
+          className="text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors animate-blur-fade-up flex items-center gap-1.5 cursor-pointer"
+          style={{ animationDelay: `${100 + (NAV_LINKS.length + 0.5) * 50}ms` }}
+        >
+          <span>⛵ Boat Racing</span>
+        </button>
+
+        {/* "🏊 Swimming Race" Link */}
+        <button
+          id="nav-link-swimming"
+          onClick={onSwimmingClick}
+          className="text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors animate-blur-fade-up flex items-center gap-1.5 cursor-pointer"
+          style={{ animationDelay: `${100 + (NAV_LINKS.length + 0.8) * 50}ms` }}
+        >
+          <span>🏊 Swimming Race</span>
+        </button>
+
         {/* "🎮 Anime Guesser" Link */}
         <button
           id="nav-link-anime"
           onClick={onAnimeClick}
-          className="text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors animate-blur-fade-up flex items-center gap-1.5 cursor-pointer"
+          className="text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors animate-blur-fade-up flex items-center gap-1.5 cursor-pointer"
           style={{ animationDelay: `${100 + (NAV_LINKS.length + 1) * 50}ms` }}
         >
           <span>🎮 Anime Guesser</span>
@@ -77,6 +103,17 @@ export default function Navbar({
           style={{ animationDelay: `${100 + (NAV_LINKS.length + 2) * 50}ms` }}
         >
           <span>⌨️ Typeracer</span>
+        </button>
+
+        {/* "🏆 Leaderboard" Link */}
+        <button
+          id="nav-link-leaderboard"
+          onClick={onLeaderboardClick}
+          className="text-sm font-semibold text-amber-400 hover:text-amber-300 transition-colors animate-blur-fade-up flex items-center gap-1.5 cursor-pointer bg-transparent border-none"
+          style={{ animationDelay: `${100 + (NAV_LINKS.length + 3) * 50}ms` }}
+        >
+          <Trophy size={14} className="text-yellow-400" />
+          <span>Самбар</span>
         </button>
       </div>
 

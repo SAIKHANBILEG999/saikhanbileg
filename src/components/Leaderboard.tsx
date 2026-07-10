@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { getLeaderboard, LeaderboardEntry } from "../lib/firebase";
-import { Trophy, Award, Sparkles, RefreshCw, X } from "lucide-react";
+import { Trophy, Award, Sparkles, RefreshCw, X, Gamepad2, Compass, Waves, HelpCircle } from "lucide-react";
 import { motion } from "motion/react";
 
 interface LeaderboardProps {
-  mode: "anime" | "character";
+  mode?: "anime" | "character" | "boat" | "swimming";
+  allowModeSwitching?: boolean;
   onClose?: () => void;
 }
 
-export default function Leaderboard({ mode, onClose }: LeaderboardProps) {
+export default function Leaderboard({ mode: initialMode = "anime", allowModeSwitching = true, onClose }: LeaderboardProps) {
+  const [currentMode, setCurrentMode] = useState<"anime" | "character" | "boat" | "swimming">(initialMode);
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchScores = async () => {
     setLoading(true);
     try {
-      const topScores = await getLeaderboard(mode);
+      const topScores = await getLeaderboard(currentMode);
       setEntries(topScores);
     } catch (err) {
       console.error("Error loading scores:", err);
@@ -25,11 +27,22 @@ export default function Leaderboard({ mode, onClose }: LeaderboardProps) {
   };
 
   useEffect(() => {
+    setCurrentMode(initialMode);
+  }, [initialMode]);
+
+  useEffect(() => {
     fetchScores();
-  }, [mode]);
+  }, [currentMode]);
+
+  const modes = [
+    { id: "anime", label: "Аниме Таах", icon: Sparkles, color: "text-emerald-400" },
+    { id: "character", label: "Дүр Таах", icon: HelpCircle, color: "text-amber-400" },
+    { id: "boat", label: "Завины Уралдаан", icon: Compass, color: "text-cyan-400" },
+    { id: "swimming", label: "Усан Сэлэлт", icon: Waves, color: "text-blue-400" },
+  ] as const;
 
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 w-full relative">
+    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-5 w-full relative backdrop-blur-xl">
       {onClose && (
         <button 
           onClick={onClose}
@@ -56,9 +69,32 @@ export default function Leaderboard({ mode, onClose }: LeaderboardProps) {
         </button>
       </div>
 
+      {allowModeSwitching && (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-4">
+          {modes.map((m) => {
+            const Icon = m.icon;
+            const isSelected = currentMode === m.id;
+            return (
+              <button
+                key={m.id}
+                onClick={() => setCurrentMode(m.id)}
+                className={`py-2 px-2 rounded-xl border text-[10px] font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
+                  isSelected
+                    ? "bg-white/10 border-white/20 text-white shadow-md shadow-black/20"
+                    : "bg-white/[0.02] border-white/5 text-zinc-400 hover:bg-white/5"
+                }`}
+              >
+                <Icon size={12} className={m.color} />
+                <span>{m.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+
       <div className="text-center mb-3">
         <span className="px-3 py-1 rounded-full bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 font-bold text-[10px] tracking-wider uppercase">
-          {mode === "anime" ? "Аниме Таах" : "Баатрын Дүр Таах"} горим
+          {modes.find(m => m.id === currentMode)?.label} горим
         </span>
       </div>
 

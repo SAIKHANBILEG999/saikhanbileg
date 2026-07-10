@@ -1,4 +1,4 @@
-import { Search, User } from "lucide-react";
+import { Search, User, Trophy } from "lucide-react";
 import { NAV_LINKS } from "../types";
 
 const profileAvatar = "/src/assets/images/flower_avatar_1782704451351.jpg";
@@ -10,6 +10,9 @@ interface MobileMenuProps {
   onIdolClick: () => void;
   onAnimeClick: () => void;
   onTyperacerClick: () => void;
+  onBoatClick: () => void;
+  onSwimmingClick: () => void;
+  onLeaderboardClick: () => void;
   onNavLinkClick?: (label: string) => void;
 }
 
@@ -20,6 +23,9 @@ export default function MobileMenu({
   onIdolClick,
   onAnimeClick,
   onTyperacerClick,
+  onBoatClick,
+  onSwimmingClick,
+  onLeaderboardClick,
   onNavLinkClick,
 }: MobileMenuProps) {
   return (
@@ -65,11 +71,43 @@ export default function MobileMenu({
           <span>🤖 My Idol</span>
         </button>
 
+        {/* "⛵ Boat Racing" Link */}
+        <button
+          id="mobile-nav-link-boat"
+          onClick={onBoatClick}
+          className={`text-base font-medium text-cyan-400 hover:text-cyan-300 hover:bg-white/5 py-3 px-4 rounded-xl transition-all duration-300 text-left flex items-center gap-2 transform cursor-pointer ${
+            isOpen
+              ? "translate-x-0 opacity-100"
+              : "translate-x-4 opacity-0"
+          }`}
+          style={{
+            transitionDelay: `${(NAV_LINKS.length + 0.5) * 50}ms`,
+          }}
+        >
+          <span>⛵ Boat Racing</span>
+        </button>
+
+        {/* "🏊 Swimming Race" Link */}
+        <button
+          id="mobile-nav-link-swimming"
+          onClick={onSwimmingClick}
+          className={`text-base font-medium text-blue-400 hover:text-blue-300 hover:bg-white/5 py-3 px-4 rounded-xl transition-all duration-300 text-left flex items-center gap-2 transform cursor-pointer ${
+            isOpen
+              ? "translate-x-0 opacity-100"
+              : "translate-x-4 opacity-0"
+          }`}
+          style={{
+            transitionDelay: `${(NAV_LINKS.length + 0.8) * 50}ms`,
+          }}
+        >
+          <span>🏊 Swimming Race</span>
+        </button>
+
         {/* "🎮 Anime Guesser" Link */}
         <button
           id="mobile-nav-link-anime"
           onClick={onAnimeClick}
-          className={`text-base font-medium text-cyan-400 hover:text-cyan-300 hover:bg-white/5 py-3 px-4 rounded-xl transition-all duration-300 text-left flex items-center gap-2 transform cursor-pointer ${
+          className={`text-base font-medium text-emerald-400 hover:text-emerald-300 hover:bg-white/5 py-3 px-4 rounded-xl transition-all duration-300 text-left flex items-center gap-2 transform cursor-pointer ${
             isOpen
               ? "translate-x-0 opacity-100"
               : "translate-x-4 opacity-0"
@@ -95,6 +133,23 @@ export default function MobileMenu({
           }}
         >
           <span>⌨️ Typeracer</span>
+        </button>
+
+        {/* "🏆 Leaderboard" Link */}
+        <button
+          id="mobile-nav-link-leaderboard"
+          onClick={onLeaderboardClick}
+          className={`text-base font-medium text-amber-400 hover:text-amber-300 hover:bg-white/5 py-3 px-4 rounded-xl transition-all duration-300 text-left flex items-center gap-2 transform cursor-pointer bg-transparent border-none ${
+            isOpen
+              ? "translate-x-0 opacity-100"
+              : "translate-x-4 opacity-0"
+          }`}
+          style={{
+            transitionDelay: `${(NAV_LINKS.length + 3) * 50}ms`,
+          }}
+        >
+          <Trophy size={16} className="text-yellow-400" />
+          <span>Самбар</span>
         </button>
       </div>
 
